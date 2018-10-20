@@ -27,7 +27,7 @@ arbreBinomial* merge(arbreBinomial* a0, arbreBinomial* a1) {
 	// On regarde si les deux arbres on bien le même rang.
 	if (a0->rank == a1->rank) {
 		// On regarde qui sera la nouvelle racine.
-		if (a0->data < a1->data) {
+		if (inf(*(a0->data), *(a1->data))) {
 			root = a0;
 			child = a1;
 		}
