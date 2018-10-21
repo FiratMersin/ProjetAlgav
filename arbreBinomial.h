@@ -4,27 +4,29 @@
 #include "util.h"
 
 // Arbre binomial.
-typedef struct {
+typedef struct arbreBinomial arbreBinomial;
+struct {
 
 	int rank;
 
 	arbreBinomial* parent;
-	listArbreBinomial* listChild;
+	struct listArbreBinomial* listChild;
 
 	bigInt* data;
 
-} arbreBinomial;
+};
 
 // Liste doublement chaine d'abre binomiaux
 // Utile pour les fils des arbres.
-typedef struct {
+typedef struct listArbreBinomial listArbreBinomial;
+struct {
 
 	listArbreBinomial* previous;
 	listArbreBinomial* next;
 
 	arbreBinomial* data;
 
-} listArbreBinomial;
+};
 
 /*
 Créé un arbre B0 avec une racine ayant pour data la data entree en parametres.

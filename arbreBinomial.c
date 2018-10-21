@@ -41,7 +41,7 @@ arbreBinomial* merge(arbreBinomial* a0, arbreBinomial* a1) {
 			root->listChild = createListArbreBinomial(child);
 		}
 		else {
-			root->listChild = addElementToList(root->listChild, child);
+			root->listChild = addElementToListBegin(root->listChild, child);
 		}
 
 		return root;
@@ -66,8 +66,11 @@ listArbreBinomial* addElementToListBegin(listArbreBinomial* list, arbreBinomial*
 
 	ele->previous = list->previous;
 
-	if (list->previous != NULL)
-		ele->previous->next = ele;
+	if (list->previous != NULL) {
+		listArbreBinomial* previous = ele->previous;
+		previous->next = ele;
+		// ele->previous->next = ele;
+	}
 
 	ele->next = list;
 

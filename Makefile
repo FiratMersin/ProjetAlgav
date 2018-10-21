@@ -1,6 +1,6 @@
 all: main
 
-main :  util.o fileReader.o tasTree.o test.o tasTab.o
+main :  util.o fileReader.o tasTree.o test.o tasTab.o arbreBinomial.o
 	gcc -o main  util.o fileReader.o tasTree.o tasTab.o test.o -lm
 
 util.o : util.c util.h
@@ -15,5 +15,8 @@ fileReader.o : fileReader.c fileReader.h
 tasTree.o : tasTree.c tasTree.h
 	gcc -c tasTree.c
 	
+arbreBinomial.o: arbreBinomial.c arbreBinomial.h
+	gcc -c arbreBinomial.c
+
 test.o : test.c
 	gcc -c test.c
