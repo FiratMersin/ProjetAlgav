@@ -16,7 +16,7 @@ tasTree.o : tasTree.c tasTree.h
 	gcc -c tasTree.c
 	
 mainFileBinomiale: mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o fileReader.o
-	gcc -o mainFileBinomiale mainFileBinomiale.o -lm
+	gcc -o mainFileBinomiale mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o fileReader.o -lm
 
 mainFileBinomiale.o: mainFileBinomiale.c tournoisBinomial.h fileBinomiale.h util.h fileReader.h
 	gcc -c mainFileBinomiale.c

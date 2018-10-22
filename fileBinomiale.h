@@ -32,4 +32,6 @@ FB* constIter(FB* file, bigInt* tabElement, int size);
 // Fait l'union de 2 files binomiales.
 FB* unionFile(FB* f0, FB* f1);
 
+void displayFB(FB* fb);
+
 #endif

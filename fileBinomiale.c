@@ -36,6 +36,9 @@ FB* ajout(FB* file, bigInt* element) {
 				listTB* tmp = ite;
 
 				// On merge les deux TB ensembles car ils ont le meme rang.
+				// PB -> il ya une erreur de segmentation.
+				// A cause de eleToAdd qui est cree dans la fonction ajout.
+				// C'est tres bizarre.
 				TB* eleToAdd = merge(eleToAdd, tree);
 
 				ite = ite->next;
@@ -55,7 +58,7 @@ FB* ajout(FB* file, bigInt* element) {
 			file->listTree = file->listTree->previous;
 	}
 
-	return file->listTree;
+	return file;
 }
 
 FB* supprMin(FB* file) {
@@ -71,4 +74,26 @@ FB* constIter(FB* file, bigInt* tabElement, int size) {
 FB* unionFile(FB* f0, FB* f1) {
 	// TODO
 	return NULL;
+}
+
+void displayFB(FB* fb) {
+	listTB* list = fb->listTree;
+
+	if (list != NULL) {
+
+		printf("DEB_FB-------------------------------\n");
+
+		while (list != NULL) {
+
+			TB* data = list->data;
+
+			printf("%s\n", toStringTB(data));
+
+			list = list->next;
+		}
+
+		printf("END_FB-------------------------------\n");
+	} else {
+		printf("FB vide\n");
+	}
 }
