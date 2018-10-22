@@ -2,6 +2,9 @@
 
 #ifndef UTIL_H
 #define UTIL_H
+
+#define STRING_BIG_INT_SIZE 70
+
 typedef struct	{
 	unsigned int entier1;
 	unsigned int entier2;
@@ -9,13 +12,16 @@ typedef struct	{
 	unsigned int entier4;
 }bigInt;
 
-bigInt *creerBigInt();
+// bigInt *creerBigInt();
+bigInt *creerBigInt(char *initBint);
 
 bigInt *copier(bigInt bi);
 
 void freeBigInt(bigInt *bi);
 
 void afficheBigInt(bigInt *bi);
+
+char* toStringBigInt(bigInt *bi);
 
 unsigned int getEntier(char *hex, int start, int end);
 
