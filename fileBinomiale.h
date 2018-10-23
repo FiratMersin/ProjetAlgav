@@ -4,20 +4,6 @@
 #include "util.h"
 #include "tournoisBinomial.h"
 
-// Une file binomial.
-typedef struct {
-
-	int nbElement;
-	
-	/*
-	Liste de TB.
-	Pointe toujours sur le debut de la liste.
-	*/
-	listTB* listTree;
-	
-	// TODO
-} FB;
-
 // Cree une file binomiale vide.
 FB* createEmptyFileBinomiale();
 

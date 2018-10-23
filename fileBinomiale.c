@@ -16,6 +16,9 @@ FB* createEmptyFileBinomiale() {
 }
 
 FB* ajout(FB* file, bigInt* element) {
+
+	file->nbElement++;
+
 	if (file->listTree == NULL) {
 		file->listTree = createListArbreBinomial(createB0(element));
 	} else {

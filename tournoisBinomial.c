@@ -2,8 +2,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "util.h"
+#include "fileBinomiale.h"
 
 TB* createB0(bigInt* data) {
 
@@ -102,6 +104,16 @@ TB* merge(TB** a0, TB** a1) {
 	else {
 		return NULL;
 	}
+}
+
+listTB* createEmptyListTB() {
+	listTB* l = (listTB*)(malloc(sizeof(listTB)));
+
+	l->previous = NULL;
+	l->next = NULL;
+	l->data = NULL;
+
+	return l;
 }
 
 listTB* createListArbreBinomial(TB* data) {
@@ -205,6 +217,53 @@ listTB* removeElement(listTB** element) {
 		return tmpN;
 	else
 		return NULL;
+}
+
+FB* decapiteTB(TB** tb) {
+	FB* fb = createEmptyFileBinomiale();
+
+	if ((*tb)->rank > 0) {
+
+		fb->nbElement = (int)(pow(2, (*tb)->rank));
+
+		listTB* ltb = (*tb)->listChild;
+
+		int i = 0;
+		listTB* tmp = NULL;
+		while (ltb != NULL) {
+			listTB* l = createEmptyListTB();
+
+			if (i = 0) {
+				l->previous = NULL;
+
+				// Pas de copie de data.
+				l->data = ltb->data;
+
+				fb->listTree = l;
+
+				tmp = l;
+			} else {
+				l->previous = tmp;
+
+				tmp->next = l;
+
+				l->data = ltb->data;
+
+				tmp = l;
+			}
+
+			ltb = ltb->next;
+
+			free(ltb->previous);
+		}
+
+		// Transformation en TB_0
+		(*tb)->rank = 0;
+		(*tb)->listChild = NULL;
+
+	}
+
+	return fb;
 }
 
 char* toStringTB(TB* tb) {

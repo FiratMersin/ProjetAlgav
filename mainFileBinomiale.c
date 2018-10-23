@@ -51,78 +51,29 @@ int main(int argc, char** argv) {
 	printf("Apres 49_999 ajout\n");
 	displayFB(fb);
 
-/*
-	fb = ajout(fb, i);
-	displayFB(fb);
-
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
-	printf("Ajout d'un autre element dans la FB\n");
+	printf("Test de decapitation de TB_15 \n");
 
-	GetChaine(f, 100, line);
-	i = creerBigInt(line);
+	listTB* current = fb->listTree;
 
-	printf("New BigInt = %s\n", toStringBigInt(i));
+	// On va jusqu'au dernier element.
+	while (current->next != NULL) {
+		current = current->next;
+	}
 
-	printf("\nFB avant ajout d'un autre element:\n");
+	printf("TB sur lequel on est = %s\n", toStringTB(current->data));
+
+	// Va defonce la FB
+	FB* file = decapiteTB(&(current->data));
+
+	printf("file = \n");
+	displayFB(file);
+
+	printf("\n\n\ncurrent = %s", toStringTB(current->data));
+
+	printf("fb = \n");
 	displayFB(fb);
-
-	printf("\nFB apres ajout d'un autre element:\n");
-	// BEUG (voir explication dans fileBinomiale.c -> ajout)
-	fb = ajout(fb, i);
-	displayFB(fb);
-
-	printf("\n\n\n**************************************************************************************\n\n\n");
-
-	printf("Ajout d'un autre element dans la FB\n");
-
-	GetChaine(f, 100, line);
-	i = creerBigInt(line);
-
-	printf("New BigInt = %s\n", toStringBigInt(i));
-
-	printf("\nFB avant ajout d'un autre element:\n");
-	displayFB(fb);
-
-	printf("\nFB apres ajout d'un autre element:\n");
-	// BEUG (voir explication dans fileBinomiale.c -> ajout)
-	fb = ajout(fb, i);
-	displayFB(fb);
-
-	printf("\n\n\n**************************************************************************************\n\n\n");
-
-	printf("Ajout d'un autre element dans la FB\n");
-
-	GetChaine(f, 100, line);
-	i = creerBigInt(line);
-
-	printf("New BigInt = %s\n", toStringBigInt(i));
-
-	printf("\nFB avant ajout d'un autre element:\n");
-	displayFB(fb);
-
-	printf("\nFB apres ajout d'un autre element:\n");
-	// BEUG (voir explication dans fileBinomiale.c -> ajout)
-	fb = ajout(fb, i);
-	displayFB(fb);
-
-	printf("\n\n\n**************************************************************************************\n\n\n");
-
-	printf("Ajout d'un autre element dans la FB\n");
-
-	GetChaine(f, 100, line);
-	i = creerBigInt(line);
-
-	printf("New BigInt = %s\n", toStringBigInt(i));
-
-	printf("\nFB avant ajout d'un autre element:\n");
-	displayFB(fb);
-
-	printf("\nFB apres ajout d'un autre element:\n");
-	// BEUG (voir explication dans fileBinomiale.c -> ajout)
-	fb = ajout(fb, i);
-	displayFB(fb);
-*/
 
 	return 0;
 }

@@ -28,6 +28,22 @@ typedef struct {
 
 } listTB;
 
+// Une file binomial.
+// Declare ici pour plus de facilite.
+typedef struct {
+
+	// nombre d'elements de la file.
+	int nbElement;
+	
+	/*
+	Liste de TB.
+	Pointe toujours sur le debut de la liste.
+	*/
+	listTB* listTree;
+	
+	// TODO
+} FB;
+
 /*
 Créé un arbre B0 avec une racine ayant pour data la data entree en parametres.
 */
@@ -42,6 +58,11 @@ Renvoie le pointeur sur la racine du nouvel arbre.
 */
 //TB* merge(TB* a0, TB* a1);
 TB* merge(TB** a0, TB** a1);
+
+/*
+Creer une liste vide. (tous les champs a NULL).
+*/
+listTB* createEmptyListTB();
 
 /*
 Crée une list d'arbre binomial en initialisant le premier element avec la data entree en parametres.
@@ -74,6 +95,15 @@ renvoi le suivant, sinon renvoi NULL.
 */
 //listTB* removeElement(listTB* element);
 listTB* removeElement(listTB** element);
+
+/*
+Decapite le TB. Le TB devient un TB_0 (on peut donc toujours recuperer ca racine).
+
+Sa liste est copié puis liberee.
+
+Renvoie la file binomiale des TB contenu sous la racine.
+*/
+FB* decapiteTB(TB** tb);
 
 char* toStringTB(TB* tb);
 
