@@ -1,7 +1,7 @@
 #ifndef TOURNOIS_BINOMIAL_H
 #define TOURNOIS_BINOMIAL_H
 
-#define STRING_TB_SIZE 90
+#define STRING_TB_SIZE 130
 
 #include "util.h"
 
@@ -40,7 +40,8 @@ Les deux arbres doivent avoir le même rang sinon renvoie NULL.
 
 Renvoie le pointeur sur la racine du nouvel arbre.
 */
-TB* merge(TB* a0, TB* a1);
+//TB* merge(TB* a0, TB* a1);
+TB* merge(TB** a0, TB** a1);
 
 /*
 Crée une list d'arbre binomial en initialisant le premier element avec la data entree en parametres.
@@ -71,7 +72,8 @@ Free la structure, mais pas ses elements.
 Renvoie le pointeur sur l'element qui le precedait (previous). S'il n'y a pas d'element precedent,
 renvoi le suivant, sinon renvoi NULL.
 */
-listTB* removeElement(listTB* element);
+//listTB* removeElement(listTB* element);
+listTB* removeElement(listTB** element);
 
 char* toStringTB(TB* tb);
 

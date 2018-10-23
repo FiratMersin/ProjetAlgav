@@ -39,23 +39,35 @@ FB* ajout(FB* file, bigInt* element) {
 				// PB -> il ya une erreur de segmentation.
 				// A cause de eleToAdd qui est cree dans la fonction ajout.
 				// C'est tres bizarre.
-				TB* eleToAdd = merge(eleToAdd, tree);
+				eleToAdd = merge(&eleToAdd, &tree);
 
+				// On passe au suivant.
 				ite = ite->next;
 
-				// On supprime l'element de la liste.
-				removeElement(tmp);
+				if (ite != NULL) {
+					// On supprime l'element de la liste.
+					file->listTree = removeElement(&tmp);
+				} else {
+					// ICI ite->next est NULL donc on est en fin de liste.
+					file->listTree = addAfter(tmp, eleToAdd);
+					file->listTree = removeElement(&tmp);
+
+					// Le break est inutil normalement car ite == NULL.
+					break;
+				}
 			} else {
 				// On ajoute le nouvelle element.
-				addBefore(ite, eleToAdd);
+				file->listTree = addBefore(ite, eleToAdd);
 				break;
 			}
 		}
 
 		// On met a jour le pointer de la liste des tournois binomiaux.
 		// Le pointeur doit toujours pointer au debut de la liste.
-		while(file->listTree->previous != NULL)
-			file->listTree = file->listTree->previous;
+		if (file->listTree != NULL)
+			while(file->listTree->previous != NULL) {
+				file->listTree = file->listTree->previous;
+			}
 	}
 
 	return file;
@@ -81,7 +93,7 @@ void displayFB(FB* fb) {
 
 	if (list != NULL) {
 
-		printf("DEB_FB-------------------------------\n");
+		printf("\n\nDEB_FB-------------------------------\n\n");
 
 		while (list != NULL) {
 
@@ -92,7 +104,7 @@ void displayFB(FB* fb) {
 			list = list->next;
 		}
 
-		printf("END_FB-------------------------------\n");
+		printf("\nEND_FB-------------------------------\n\n");
 	} else {
 		printf("FB vide\n");
 	}

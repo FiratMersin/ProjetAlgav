@@ -19,6 +19,7 @@ TB* createB0(bigInt* data) {
 	return a;
 }
 
+/*
 TB* merge(TB* a0, TB* a1) {
 	TB* root = NULL;
 	TB* child = NULL;
@@ -62,6 +63,43 @@ TB* merge(TB* a0, TB* a1) {
 	}
 	else {
 		printf("DANS LA MOUISE\n");
+		return NULL;
+	}
+}
+*/
+
+TB* merge(TB** a0, TB** a1) {
+	TB* root = NULL;
+	TB* child = NULL;
+
+	// On regarde si les deux arbres on bien le même rang.
+	if ((*a0)->rank == (*a1)->rank) {
+
+		// On regarde qui sera la nouvelle racine.
+		if (inf((*(*a0)->data), (*(*a1)->data))) {
+			root = (*a0);
+			child = (*a1);
+		}
+		else {
+			root = (*a1);
+			child = (*a0);
+		}
+
+		// Assemblage.
+		if (root->listChild == NULL) {
+			root->listChild = createListArbreBinomial(child);
+		}
+		else {
+			root->listChild = addAfter(root->listChild, child);
+		}
+
+		root->rank++;
+
+		child->parent = root;
+
+		return root;
+	}
+	else {
 		return NULL;
 	}
 }
@@ -111,6 +149,7 @@ listTB* addAfter(listTB* list, TB* element) {
 	return list;
 }
 
+/*
 listTB* removeElement(listTB* element) {
 
 	listTB* tmpP = element->previous;
@@ -138,11 +177,40 @@ listTB* removeElement(listTB* element) {
 	else
 		return NULL;
 }
+*/
+
+listTB* removeElement(listTB** element) {
+
+	listTB* tmpP = (*element)->previous;
+	listTB* tmpN = (*element)->next;
+
+	if ((*element)->previous != NULL) {
+		listTB* previous = (*element)->previous;
+		previous->next = (*element)->next;
+	}
+
+	if ((*element)->next != NULL) {
+		listTB* next = (*element)->next;
+		next->previous = (*element)->previous;
+	}
+
+	(*element)->previous = NULL;
+	(*element)->next = NULL;
+
+	free((*element));
+
+	if (tmpP != NULL)
+		return tmpP;
+	else if (tmpN != NULL)
+		return tmpN;
+	else
+		return NULL;
+}
 
 char* toStringTB(TB* tb) {
 	char* array = (char*)(malloc(sizeof(char) * STRING_TB_SIZE));
 
-	sprintf(array, "[TB_%d, data = %s]", tb->rank, toStringBigInt(tb->data));
+	sprintf(array, "[TB_%d, root_data = %s]", tb->rank, toStringBigInt(tb->data));
 
 	return array;
 }
