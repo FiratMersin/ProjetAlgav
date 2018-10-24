@@ -40,7 +40,13 @@ void afficheBigInt(bigInt *bi){
 	printf("0x%08x%08x%08x%08x\n",bi->entier1, bi->entier2, bi->entier3, bi->entier4);
 }
 
+char* toStringBigInt(bigInt *bi) {
+	char* array = (char*)(malloc(sizeof(char) * STRING_BIG_INT_SIZE));
 
+	sprintf(array, "0x%08x%08x%08x%08x", bi->entier1, bi->entier2, bi->entier3, bi->entier4);
+
+	return array;
+}
 
 unsigned int getEntier(char *hex, int start, int end){//retourne un unsigned int en hexa correspondant aux chiffres hexa dans hex allant de start à (end - 1)
 	char h[10] = "0x";
