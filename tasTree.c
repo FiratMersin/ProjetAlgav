@@ -15,42 +15,79 @@ bigInt SupprMin_t(tasTree **t){//OK
 		return supp;
 	}
 	echanger_t( &((*t)->tas), cible);
-	freeNode(cible);
-	noeud **n;
-	noeud **tmp = &((*t)->tas);
-	do{
-		n = tmp;
-		tmp = descendre_t(n);
-	}while(tmp != n);
+	freeNode(cible);//on libère le noeud et cible = null
+	descendre_t(&((*t)->tas));//on descend la racine
 	return supp;
 }
 
 
 void Ajout_t(tasTree **t, bigInt *add){//OK
-	noeud ** cible = getNode(t, 1);
+	noeud ** cible = getNode(t, 1);//on récupère le noeud vide le plus à gauche
 	(*t)->nbelem++;
 	(*cible)->value = *add;
-	noeud **tmp = cible;
-	do{
-		cible = tmp;
-		tmp = monter_t(cible);
-	}while(tmp != cible);
+	monter_t(cible);//on monte le noeud qu'on vient d'ajouter
 }
 
 
-tasTree * ConsIter_t(bigInt *adds, int taille){//à implémenter en O(n), n = nb de BigInt a ajouter
-	tasTree *t = init_t(taille);
+void Ajout_sans_monter(tasTree **t, bigInt *add){
+	noeud ** cible = getNode(t, 1);//on récupère le noeud vide le plus à gauche
+	(*t)->nbelem++;
+	(*cible)->value = *add;
+}
+
+void ConsIter_t(tasTree **t, bigInt **adds, int taille){
 	int i;
-	for(i = 0; i < taille; ++i){
-		Ajout_t(&t, &(adds[i]));
+	for(i = 0; i < taille; ++i){//on ajouter toutes les clés sans aucune comparaison entre clés
+		Ajout_sans_monter(t, (adds[i]));
 	}
-	return t;
+	//on enregistre  nbelem
+	int tmpnbelem = (*t)->nbelem;
+	int nbelem = tmpnbelem;
+	if(nbelem < 2){
+		free(adds);
+		return;
+	}
+	int h =  ((int)(log10(nbelem)/log10(2)));
+	(*t)->nbelem = ((int)pow(2, h)) -1;
+	//ensuite de hauteur-1 à la racine, pour chaque niveau
+	//on applique la fonction descendre du noeud le plus a droite au noeud le plus a gauche
+	while((*t)->nbelem != 0){
+		(*t)->nbelem--;
+		noeud **cible = getNode(t, 0);
+		descendre_t(cible);
+	}
+	(*t)->nbelem = tmpnbelem;
+	free(adds);
 }
 
-
+void ajouter_all_sans_monter(tasTree **t, noeud *n){
+	if(n != NULL){
+		Ajout_sans_monter(t , &n->value);
+		ajouter_all_sans_monter(t, n->fg);
+		ajouter_all_sans_monter(t, n->fd);
+	}
+}
 
 tasTree *Union_t(tasTree *t1, tasTree *t2){//à implémenter en O(n+m) n+m = nb de BigInt de t1 + t2
-	tasTree *t = init_t(1);
+	tasTree *t = init_t(t1->nbelem + t2->nbelem);
+	ajouter_all_sans_monter(&t, t1->tas);
+	ajouter_all_sans_monter(&t, t2->tas);
+
+	int tmpnbelem = t->nbelem;
+	int nbelem = tmpnbelem;
+	if(nbelem < 2){
+		return t;
+	}
+	int h =  ((int)(log10(nbelem)/log10(2)));
+	t->nbelem = ((int)pow(2, h)) -1;
+	//ensuite de hauteur-1 à la racine, pour chaque niveau
+	//on applique la fonction descendre du noeud le plus a droite au noeud le plus a gauche
+	while(t->nbelem != 0){
+		t->nbelem--;
+		noeud **cible = getNode(&t, 0);
+		descendre_t(cible);
+	}
+	t->nbelem = tmpnbelem;
 	return t;
 }
 
@@ -77,16 +114,46 @@ tasTree *init_t(int taillemax){
 	return t;
 }
 
+/*
 tasTree *getFromFile_t(FILE *f, int taille){//initialise un tasTree à partir d'un fichier
 	 char str[101];
+	 bigInt **tab=(bigInt**)malloc(sizeof(bigInt*)*taille);
 	 int i;
-	 tasTree *t = init_t(taille);
+	 tasTree *t = init_t(taille);;
 	 for(i=0; i<taille; ++i){
 		 GetChaine(f, 100, str);
-		 Ajout_t(&t, creerBigInt(str));
+		 tab[i] = creerBigInt(str);
+		//Ajout_t(&t, creerBigInt(str));
 	 }
+	 ConsIter_t(&t ,tab, taille);
 	 return t;
 }
+*/
+
+tasTree *getFromFile_t(FILE *f, int taille){//union des deux moitier du fichier
+	 char str[101];
+	 int  taillem2 = (int)(taille/2);
+	 bigInt **tab1=(bigInt**)malloc(sizeof(bigInt*)*taillem2);
+	 bigInt **tab2=(bigInt**)malloc(sizeof(bigInt*)*taillem2);
+	 int i;
+	 tasTree *t1 = init_t(taillem2);
+	 tasTree *t2 = init_t(taillem2);
+	 for(i=0; i<taillem2; ++i){
+		 GetChaine(f, 100, str);
+		 tab1[i] = creerBigInt(str);
+	 }
+	 ConsIter_t(&t1 ,tab1, taillem2);
+
+
+	 for(i=0; i<taillem2; ++i){
+		 GetChaine(f, 100, str);
+		 tab2[i] = creerBigInt(str);
+	 }
+	 ConsIter_t(&t2 ,tab2, taillem2);
+	 tasTree *uni = Union_t(t1, t2);
+	 return uni;
+}
+
 
 void echanger_t(noeud **n, noeud **t){//On échange seulement la valeur des noeuds
 	bigInt tmp = (*n)->value;
@@ -104,7 +171,7 @@ int hasFilsDroit_t(noeud *n){
 
 //faire nbelem-- avant d'appeler dans supprimerMin pour récupérer le noeud plein le plus à gauche
 //sinon retourne le noeud vide le plus à gauche dans l'arbre
-noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr //si cas = 1 alors initialisé le noeud cible avec de le retourner.
+noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr (ou recuperer un noeud existant) //si cas = 1 alors initialisé le noeud cible avant de le retourner.
 	noeud **cur = &((*t)->tas);
 	noeud **pere;
 	int nbelem = (*t)->nbelem;
@@ -112,7 +179,7 @@ noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr //si cas = 1 alors i
 	int h = ((int)(log10(nbelem+1)/log10(2))) +1;
 	int c = nbelem - ((int) pow(2, h -1)) + 1;//nb elements au dernier niveau de l'arbre
 	int max = (int)pow(2,h-1);//nb elements max au dernier niveau de l'arbre
-	while(h > 1){//CONDITION DARRET A CHANGER POUR TOUT CORRIGER
+	while(h > 1){
 		pere = cur;
 		int midmax = max / 2;
 		//go to fg si c < midmax, sinon go to fd
@@ -120,13 +187,14 @@ noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr //si cas = 1 alors i
 			cur = &((*cur)->fg);
 		}else{
 			cur = &((*cur)->fd);
-			c = c - midmax;
+			c = c - midmax;//on va dans le sous arbre de droit donc le dernier niveau de l'arbre contient à présent c - midmax éléments
 		}
 		max = midmax;
 		h--;
-	}if(c == 0){
+	}
+	if(c == 0){//je suis dans une feuille vide
 			if(cas) initNoeud(cur, *pere);
-	}else{
+	}else{//sinon je vais à gauche
 		pere = cur;
 		cur = &((*cur)->fg);
 		if(cas) initNoeud(cur, *pere);
@@ -134,24 +202,24 @@ noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr //si cas = 1 alors i
 	return cur;
 }
 
-noeud ** monter_t(noeud **n){
-	if(! hasPere_t(*n)) return n;
-	if(  (! inf( ((*n)->pere->value), ((*n)->value)) )
-		  && (! eg( ((*n)->pere->value), ((*n)->value) ) )){
-		echanger_t(n, &((*n)->pere));
-		return &((*n)->pere);
+void monter_t(noeud **n){//monter au père jusqu'à la racine ou stop juste avant un père plus petit
+	if(hasPere_t(*n)){
+		if(  (! inf( ((*n)->pere->value), ((*n)->value)) )
+			  && (! eg( ((*n)->pere->value), ((*n)->value) ) )){
+			echanger_t(n, &((*n)->pere));
+			monter_t(&((*n)->pere));//récursion sur pere
+		}
 	}
-	return n;
 }
 
-noeud ** descendre_t(noeud **n){
-	if(estFeuille_t(*n))return n;
-	noeud ** filsmin=plusPetitFils_t(*n);
-	if( inf( ((*filsmin)->value) , ((*n)->value)) ){
-		echanger_t(filsmin, n);
-		return filsmin;
+void descendre_t(noeud **n){//descend tant que différent d'une feuille et au moins un fils plus petitS
+	if(! estFeuille_t(*n)){
+		noeud ** filsmin=plusPetitFils_t(*n);
+		if( inf( ((*filsmin)->value) , ((*n)->value)) ){
+			echanger_t(filsmin, n);
+			descendre_t(filsmin);//récursion sur filsmin
+		}
 	}
-	return n;
 }
 
 int hasPere_t(noeud *n){
@@ -171,11 +239,11 @@ int estFeuille_t(noeud *n){
 }
 
 
-void afficheArbre(noeud *n, int h){
+void afficheArbre(noeud *n){
 	if(n != NULL){
 		afficheBigInt(&(n->value));
-		afficheArbre(n->fg,h+1);
-		afficheArbre(n->fd, h+1);
+		afficheArbre(n->fg);
+		afficheArbre(n->fd);
 
 	}
 }

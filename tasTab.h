@@ -17,7 +17,7 @@ bigInt SupprMin(tasTab *t);
 
 void Ajout(tasTab *t, bigInt add);
 
-tasTab * ConsIter(bigInt *adds, int taille);
+void ConsIter(tasTab **t, bigInt **adds, int taille);
 
 tasTab *Union(tasTab *t1, tasTab *t2);
 
@@ -38,8 +38,8 @@ int hasFilsDroit(tasTab *t, int i);
 int estFeuille(tasTab *t, int i);
 int plusPetitFils(tasTab *t, int i);
 int pere(int i);
-int monter(tasTab *t, int j);
-int descendre(tasTab *t, int j);
+void monter(tasTab *t, int j);
+void descendre(tasTab *t, int j);
 
 
 

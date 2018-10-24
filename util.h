@@ -9,7 +9,7 @@ typedef struct	{
 	unsigned int entier4;
 }bigInt;
 
-bigInt *creerBigInt();
+bigInt *creerBigInt(char *initBint);
 
 bigInt *copier(bigInt bi);
 

@@ -6,12 +6,7 @@ bigInt SupprMin(tasTab *t){
 	echanger(t, racine(), t->nbelem);
 	bigInt suppr = t->tab[t->nbelem];
 	t->nbelem--;
-	int indDesc;
-	int tmp = racine();
-	do{
-		indDesc = tmp;
-		tmp = descendre(t, indDesc);
-	}while(tmp != indDesc);
+	descendre(t, racine());
 	return suppr;
 }
 
@@ -22,40 +17,55 @@ void Ajout(tasTab *t, bigInt add){
 	}
 	t->nbelem++;//augmente le nombre d'élément dans le tas
 	t->tab[t->nbelem] = *(copier(add));//on place le nouvel élément dans la première feuille vide
-	int indAdd;
-	int tmp = t->nbelem;
-	do{
-		indAdd = tmp;
-		tmp = monter(t, indAdd);
-	}while(tmp != indAdd);//on monte tant que monter change l'indice de add
+	monter(t, t->nbelem);
 }
 
-tasTab * ConsIter(bigInt *adds, int taille){//a modifier
-	tasTab *t = init(taille);
+void Ajoutsans_monter(tasTab *t, bigInt *add){
+	if(t->nbelem == t->nbmax){
+			printf("Erreur : insertion dans un tasTab plein !");
+			exit(0);
+	}
+	t->nbelem++;
+	t->tab[t->nbelem] = *add;
+}
+
+void ConsIter(tasTab **t, bigInt **adds, int taille){//a modifier
 	int i;
 	for(i = 0; i < taille; ++i){
-		Ajout(t, adds[i]);
+		Ajoutsans_monter(*t, adds[i]);
 	}
-	return t;
+	if((*t)->nbelem < 2){
+		free(adds);
+		return;
+	}
+	int h =  ((int)(log10((*t)->nbelem)/log10(2)));
+	int nbelem = ((int)pow(2, h)) -1;
+	for(i = nbelem; i >0; i--){
+		descendre(*t, i);
+	}
+	free(adds);
 }
 
 tasTab *Union(tasTab *t1, tasTab *t2){
 	tasTab *tu = init(t1->nbmax + t2->nbmax);
-	tasTab *u1, *u2;
-	if(t1->nbmax > t2->nbmax){
-		u1 = t1;
-		u2 = t2;
-	}else{
-		u1 = t2;
-		u2 = t1;
-	}
-	//on copie les éléments de u1 dans tu puis on ajoute les éléments de u2 dans tu
 	int i;
-	for(i = 1; i <= u1->nbelem; ++i){
-		tu->tab[i] = *(copier(u1->tab[i]));
+	if(t1->nbelem == t2->nbelem){
+		for(i = 1; i<=t1->nbelem; i++){
+			Ajoutsans_monter(tu, &t1->tab[i]);
+			Ajoutsans_monter(tu, &t2->tab[i]);
+		}
+	}else{
+		for(i = 1; i<=t1->nbelem; i++){
+			Ajoutsans_monter(tu, &t1->tab[i]);
+		}
+		for(i = 1; i<=t2->nbelem; i++){
+			Ajoutsans_monter(tu, &t2->tab[i]);
+		}
 	}
-	for(i = 1; i <= u2->nbelem; i++){
-		Ajout(tu, u2->tab[i]);
+	int h =  ((int)(log10(tu->nbelem)/log10(2)));
+	int nbelem = ((int)pow(2, h)) -1;
+	for(i = nbelem; i >=0; i--){
+		descendre(tu, i);
 	}
 	return tu;
 }
@@ -137,36 +147,63 @@ int pere(int i){
 		return i/2;
 }
 
-int monter(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
-	if(! hasPere(j)) return j;
-	int p=pere(j);// p = indice
-	if(  (! inf(t->tab[p],t->tab[j]) )
-	  && (! eg(t->tab[p],t->tab[j]) )){
-		echanger(t,j,p);
-		return p;
+void monter(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
+	if(hasPere(j)){
+		int p=pere(j);// p = indice
+		if(  (! inf(t->tab[p],t->tab[j]) )
+		  && (! eg(t->tab[p],t->tab[j]) )){
+			echanger(t,j,p);
+			monter(t, p);
+		}
 	}
-	return j;
 }
 
-int descendre(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
-	if(estFeuille(t,j))return j;
-	int filsmin=plusPetitFils(t,j);// filsmin = indice
-	if( inf(t->tab[filsmin] , t->tab[j]) ){
-		echanger(t,filsmin,j);
-		return filsmin;
+void descendre(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
+	if(! estFeuille(t,j)){
+		int filsmin=plusPetitFils(t,j);// filsmin = indice
+		if( inf(t->tab[filsmin] , t->tab[j]) ){
+			echanger(t,filsmin,j);
+			descendre(t, filsmin);
+		}
 	}
-	return j;
 }
+/*
+tasTab *getFromFile(FILE *f, int taille){
+	 char str[101];
+	 bigInt **tab=(bigInt**)malloc(sizeof(bigInt*)*taille);
+	 int i;
+	 tasTab *t= init(taille);
+	 for(i=0; i<taille; ++i){
+		 GetChaine(f, 100, str);
+		 tab[i] = creerBigInt(str);
+		 //Ajout(t, *(creerBigInt(str)));
+	 }
+	 ConsIter(&t, tab, taille);
+	 return t;
+}
+*/
 
 tasTab *getFromFile(FILE *f, int taille){
 	 char str[101];
+	 int  taillem2 = (int)(taille/2);
+	 bigInt **tab1=(bigInt**)malloc(sizeof(bigInt*)*taillem2);
+	 bigInt **tab2=(bigInt**)malloc(sizeof(bigInt*)*taillem2);
 	 int i;
-	 tasTab *t = init(taille);
-	 for(i=0; i<taille; ++i){
+	 tasTab *t1 = init(taillem2);
+	 tasTab *t2 = init(taillem2);
+	 for(i=0; i<taillem2; ++i){
 		 GetChaine(f, 100, str);
-		 Ajout(t, *(creerBigInt(str)));
+		 tab1[i] = creerBigInt(str);
 	 }
-	 return t;
-}
+	 ConsIter(&t1 ,tab1, taillem2);
 
+
+	 for(i=0; i<taillem2; ++i){
+		 GetChaine(f, 100, str);
+		 tab2[i] = creerBigInt(str);
+	 }
+	 ConsIter(&t2 ,tab2, taillem2);
+	 tasTab *uni = Union(t1, t2);
+	 return uni;
+}
 

@@ -1,7 +1,7 @@
 all: main
 
-main :  util.o fileReader.o tasTree.o test.o tasTab.o
-	gcc -o main  util.o fileReader.o tasTree.o tasTab.o test.o -lm
+main :  util.o fileReader.o tasTree.o test.o tasTab.o md5.o
+	gcc -o main  util.o fileReader.o tasTree.o tasTab.o test.o md5.o -lm
 
 util.o : util.c util.h
 	gcc -c util.c
@@ -17,3 +17,6 @@ tasTree.o : tasTree.c tasTree.h
 	
 test.o : test.c
 	gcc -c test.c
+	
+md5.o : md5.c md5.h
+	gcc -w -c md5.c

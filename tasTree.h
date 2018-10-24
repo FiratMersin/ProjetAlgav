@@ -23,7 +23,7 @@ bigInt SupprMin_t(tasTree **t);
 
 void Ajout_t(tasTree **t, bigInt *add);
 
-tasTree * ConsIter_t(bigInt *adds, int taille);
+void ConsIter_t(tasTree **t, bigInt **adds, int taille);
 
 tasTree *Union_t(tasTree *t1, tasTree *t2);
 
@@ -42,10 +42,12 @@ int hasFilsGauche_t(noeud *n);
 int hasFilsDroit_t(noeud *n);
 int estFeuille_t(noeud *n);
 noeud **plusPetitFils_t(noeud *n);
-noeud ** monter_t(noeud **n);
-noeud ** descendre_t(noeud **n);
+void monter_t(noeud **n);
+void descendre_t(noeud **n);
 
-void afficheArbre(noeud *n, int c);
+void Ajout_sans_monter(tasTree **t, bigInt *add);//pour ConsIter et Union
+
+void afficheArbre(noeud *n);
 
 #endif
 
