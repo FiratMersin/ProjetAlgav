@@ -6,27 +6,28 @@
 #include "util.h"
 
 // Tournois binomiale.
-typedef struct {
+typedef struct tournoisB{//on nomme la struct avant pour faire pointer des champs vers soi-meme en utilisant ce nom ! 
 
 	int rank;
 
-	struct TB* parent;
-	struct listTB* listChild;
+	struct tournoisB* parent;
+	struct lTB* listChild;//ici on met un pointeur vers struct lTB car la listTB est définit après (étant donné qu'un pointeur nécessite
+				//toujours la meme quantité de mémoire on sait ce qu'il faut allouer pour stocker *listChild)
 
 	bigInt* data;
 
-} TB;
+} TB;//on renomme la structure et on utilise ce nom là dans les structures déclaré par la suite 
 
 // Liste doublement chaine d'abre binomiaux
 // Utile pour les fils des arbres.
-typedef struct {
+typedef struct lTB{
 
-	struct listTB* previous;
-	struct listTB* next;
+	struct lTB* previous;
+	struct lTB* next;
 
-	struct TB* data;
+	TB* data;//ici on met TB* car la on connait le type qui a été définit juste avant
 
-} listTB;
+} listTB;  
 
 // Une file binomial.
 // Declare ici pour plus de facilite.
