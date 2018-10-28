@@ -43,7 +43,7 @@ TB* merge(TB** a0, TB** a1) {
 			root->listChild = createListArbreBinomial(child);
 		}
 		else {
-			root->listChild = addAfter(root->listChild, child);
+			root->listChild = addAfter(&root->listChild, &child);
 		}
 
 		root->rank++;
@@ -78,38 +78,38 @@ listTB* createListArbreBinomial(TB* data) {
 	return list;
 }
 
-listTB* addBefore(listTB* list, TB* element) {
-	listTB* ele = createListArbreBinomial(element);
+listTB* addBefore(listTB** list, TB** element) {
+	listTB* ele = createListArbreBinomial((*element));
 
-	ele->next = list;
+	ele->next = (*list);
 
-	if (list->previous != NULL) {
-		listTB* previous = list->previous;
+	if ((*list)->previous != NULL) {
+		listTB* previous = (*list)->previous;
 		previous->next = ele;
 	}
 
-	ele->previous = list->previous;
+	ele->previous = (*list)->previous;
 
-	list->previous = ele;
+	(*list)->previous = ele;
 
-	return list;
+	return (*list);
 }
 
-listTB* addAfter(listTB* list, TB* element) {
-	listTB* ele = createListArbreBinomial(element);
+listTB* addAfter(listTB** list, TB** element) {
+	listTB* ele = createListArbreBinomial((*element));
 
-	ele->previous = list;
+	ele->previous = (*list);
 
-	if (list->next != NULL) {
-		listTB* next = list->next;
+	if ((*list)->next != NULL) {
+		listTB* next = (*list)->next;
 		next->previous = ele;
 	}
 
-	ele->next = list->next;
+	ele->next = (*list)->next;
 
-	list->next = ele;
+	(*list)->next = ele;
 
-	return list;
+	return (*list);
 }
 
 listTB* removeElement(listTB** element) {
@@ -180,9 +180,6 @@ FB* decapiteTB(TB** tb) {
 
 			ltb = ltb->next;
 
-			// Il ne faut pas free.
-			//free(ltb->previous);
-
 			i++;
 		}
 
@@ -193,6 +190,41 @@ FB* decapiteTB(TB** tb) {
 	}
 
 	return fb;
+}
+
+listTB** listTBToArray(listTB* tb) {
+
+	listTB* current = tb;
+
+	// On cherche le rang maximal.
+	int maxRank = -1;
+
+	while (current != NULL) {
+		if (current->data->rank > maxRank)
+			maxRank = current->data->rank;
+
+		current = current->next;
+	}
+
+	// On cree notre tableau de listTB.
+
+	listTB** arrayListTB = (listTB**)(malloc(sizeof(listTB*) * maxRank));
+
+	for (listTB** ite = arrayListTB; ite != arrayListTB + maxRank; ite++) {
+		*ite = NULL;
+	}
+
+	// On renmpli notre tableau.
+	current = tb;
+
+	while (current != NULL) {
+
+		arrayListTB[current->data->rank] = current;
+
+		current = current->next;
+	}
+
+	return arrayListTB;
 }
 
 char* toStringTB(TB* tb) {

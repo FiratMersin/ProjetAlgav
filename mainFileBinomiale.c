@@ -32,48 +32,44 @@ int main(int argc, char** argv) {
 
 	printf("BigInt = %s\n", toStringBigInt(b));
 
-	FB* fb = createEmptyFileBinomiale();
-	displayFB(fb);
+	FB* fb0 = createEmptyFileBinomiale();
+	FB* fb1 = createEmptyFileBinomiale();
+	displayFB(fb0);
+	displayFB(fb1);
 
-	printf("Ajout de b dans fb\n");
-	ajout(fb, b);
+	printf("Ajout de b dans fb0\n");
+	ajout(fb0, b);
+	displayFB(fb0);
 
-	displayFB(fb);
+	printf("Ajout de b dans fb1\n");
+	ajout(fb1, b);
+	displayFB(fb1);
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
 	for (int i = 0; i < 49999; i++) {
 		GetChaine(f, 100, line);
 		b = creerBigInt(line);
-		fb = ajout(fb, b);
+		fb0 = ajout(fb0, b);
+		fb1 = ajout(fb1, b);
 	}
 
 	printf("Apres 49_999 ajout\n");
-	displayFB(fb);
+
+	printf("FB0 = ");
+	displayFB(fb0);
+
+	printf("FB1 = ");
+	displayFB(fb1);
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
-	printf("Test de decapitation de TB_15 \n");
+	printf("Union de FB0 et FB1\n");
 
-	listTB* current = fb->listTree;
+	FB* fbUnion = unionFile(&fb0, &fb1);
 
-	// On va jusqu'au dernier element.
-	while (current->next != NULL) {
-		current = current->next;
-	}
-
-	printf("TB sur lequel on est = %s\n", toStringTB(current->data));
-
-	// Va defonce la FB
-	FB* file = decapiteTB(&(current->data));
-
-	printf("file = \n");
-	displayFB(file);
-
-	printf("\n\n\ncurrent = %s\n", toStringTB(current->data));
-
-	printf("fb = \n");
-	displayFB(fb);
+	printf("FBUnion = ");
+	displayFB(fbUnion);
 
 	return 0;
 }

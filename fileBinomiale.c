@@ -37,7 +37,6 @@ FB* ajout(FB* file, bigInt* element) {
 
 			if (tree->rank == eleToAdd->rank) {
 				listTB* tmp = ite;
-
 				// On merge les deux TB ensembles car ils ont le meme rang.
 				// PB -> il ya une erreur de segmentation.
 				// A cause de eleToAdd qui est cree dans la fonction ajout.
@@ -52,7 +51,7 @@ FB* ajout(FB* file, bigInt* element) {
 					file->listTree = removeElement(&tmp);
 				} else {
 					// ICI ite->next est NULL donc on est en fin de liste.
-					file->listTree = addAfter(tmp, eleToAdd);
+					file->listTree = addAfter(&tmp, &eleToAdd);
 					file->listTree = removeElement(&tmp);
 
 					// Le break est inutil normalement car ite == NULL.
@@ -60,7 +59,8 @@ FB* ajout(FB* file, bigInt* element) {
 				}
 			} else {
 				// On ajoute le nouvelle element.
-				file->listTree = addBefore(ite, eleToAdd);
+				file->listTree = addBefore(&ite, &eleToAdd);
+
 				break;
 			}
 		}
@@ -76,7 +76,7 @@ FB* ajout(FB* file, bigInt* element) {
 	return file;
 }
 
-FB* supprMin(FB* file) {
+bigInt*  supprMin(FB** file) {
 	// TODO
 	return NULL;
 }
@@ -86,9 +86,53 @@ FB* constIter(FB* file, bigInt* tabElement, int size) {
 	return NULL;
 }
 
-FB* unionFile(FB* f0, FB* f1) {
-	// TODO
-	return NULL;
+FB* unionFile(FB** f0, FB** f1) {
+
+	FB* fb = createEmptyFileBinomiale();
+
+	listTB* iteF1 = (*f1)->listTree;
+
+	// On ajoute chaque TB de f1
+	// Que l'on supprime de f1 apres chaque ajout.
+	while(iteF1 != NULL) {
+		TB* elemToAdd = iteF1->data;
+
+		listTB* iteF0 = (*f0)->listTree;
+
+		while (iteF0 != NULL) {
+			TB* currentElemF0 = iteF0->data;
+			
+			if (elemToAdd->rank == currentElemF0->rank) {
+				listTB* tmp = iteF0;
+
+				// On doit passer au suivant avant de remove l'element.
+				iteF0 = iteF0->next;
+
+				elemToAdd = merge(&elemToAdd, &tmp->data);
+
+				removeElement(&tmp);
+			} else if (elemToAdd->rank < currentElemF0->rank) {
+				// On a une place pour ajouter, aucun TB n'a le meme rang que nous dans la file F0.
+				addBefore(&iteF0, &elemToAdd);
+
+				break;
+			} else {
+				iteF0 = iteF0->next;
+			}
+		}
+
+		// On a ajoute l'element de f1 on le supprime
+		listTB* elemToDel = iteF1;
+		iteF1 = iteF1->next;
+
+		// On fait pas removeElement(iteF1->previous) car iteF1 peut etre NULL. (fin de liste).
+ 		removeElement(&elemToDel);
+	}
+
+	(*f1)->nbElement = 0;
+	(*f1)->listTree = NULL;
+
+	return *f0;
 }
 
 void displayFB(FB* fb) {
