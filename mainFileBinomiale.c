@@ -6,19 +6,20 @@
 #include "fileBinomiale.h"
 #include "fileReader.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
 
 	char *filename = "cles_alea/jeu_1_nb_cles_50000.txt";
 	FILE *f = fopen(filename, "r");
-	FILE *f1 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
+	FILE *f1 = fopen("cles_alea/jeu_2_nb_cles_5000.txt", "r");
 
 	char line[101];
 
 	GetChaine(f, 100, line);
-	bigInt* bi0 = creerBigInt(line);
+	bigInt *bi0 = creerBigInt(line);
 
 	GetChaine(f1, 100, line);
-	bigInt* bi1 = creerBigInt(line);
+	bigInt *bi1 = creerBigInt(line);
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
@@ -26,19 +27,18 @@ int main(int argc, char** argv) {
 
 	printf("BigInt = %s\n", toStringBigInt(bi0));
 
-	TB* b0 = createB0(bi0);
+	TB *b0 = createB0(bi0);
 	printf("TB0 = %s\n", toStringTB(b0));
 
-	TB* b01 = createB0(bi1);
+	TB *b01 = createB0(bi1);
 	printf("TB01 = %s\n", toStringTB(b01));
-
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
 	printf("Creation d'une FB\n");
 
-	FB* fb0 = createEmptyFileBinomiale();
-	FB* fb1 = createEmptyFileBinomiale();
+	FB *fb0 = createEmptyFileBinomiale();
+	FB *fb1 = createEmptyFileBinomiale();
 	displayFB(fb0);
 	displayFB(fb1);
 
@@ -52,11 +52,17 @@ int main(int argc, char** argv) {
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
-	for (int i = 0; i < 49999; i++) {
+	int i = 0;
+
+	for (i = 0; i < 49999; i++)
+	{
 		GetChaine(f, 100, line);
 		bi0 = creerBigInt(line);
 		fb0 = ajout(fb0, bi0);
+	}
 
+	for (i = 0; i < 4999; i++)
+	{
 		GetChaine(f1, 100, line);
 		bi1 = creerBigInt(line);
 		fb1 = ajout(fb1, bi1);
@@ -74,7 +80,7 @@ int main(int argc, char** argv) {
 
 	printf("Union de FB0 et FB1\n");
 
-	FB* fbUnion = unionFile(&fb0, &fb1);
+	FB *fbUnion = unionFile(&fb0, &fb1);
 
 	printf("FBUnion = ");
 	displayFB(fbUnion);

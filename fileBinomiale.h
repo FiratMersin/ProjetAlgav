@@ -5,19 +5,19 @@
 #include "tournoisBinomial.h"
 
 // Cree une file binomiale vide.
-FB* createEmptyFileBinomiale();
+FB *createEmptyFileBinomiale();
 
 // Ajoute l'element a la file binomiale.
-FB* ajout(FB* file, bigInt* element);
+FB *ajout(FB *file, bigInt *element);
 
 /* 
 Supprime le plus petit element de la file binomiale.
 
 Renvoie le minimum.
 */
-bigInt* supprMin(FB** file);
+bigInt *supprMin(FB **file);
 
-FB* constIter(FB* file, bigInt* tabElement, int size);
+FB *constIter(FB *file, bigInt *tabElement, int size);
 
 /*
 Fait l'union de 2 files binomiales.
@@ -25,8 +25,8 @@ Fait l'union de 2 files binomiales.
 Renvoie la file binomiale resultante. 
 (f0 et f1 en sortent inutilisables, f0 sera la file resultante, f1 sera vide).
 */
-FB* unionFile(FB** f0, FB** f1);
+FB *unionFile(FB **f0, FB **f1);
 
-void displayFB(FB* fb);
+void displayFB(FB *fb);
 
 #endif

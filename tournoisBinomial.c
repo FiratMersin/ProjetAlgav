@@ -7,42 +7,49 @@
 #include "util.h"
 #include "fileBinomiale.h"
 
-TB* createB0(bigInt* data) {
+TB *createB0(bigInt *data)
+{
 
-	TB* a = (TB*)(malloc(sizeof(TB)));
+	TB *a = (TB *)(malloc(sizeof(TB)));
 
 	a->rank = 0;
 
 	a->parent = NULL;
 	a->listChild = NULL;
-	
+
 	a->data = data;
 
 	return a;
 }
 
-TB* merge(TB** a0, TB** a1) {
-	TB* root = NULL;
-	TB* child = NULL;
+TB *merge(TB **a0, TB **a1)
+{
+	TB *root = NULL;
+	TB *child = NULL;
 
 	// On regarde si les deux arbres on bien le m�me rang.
-	if ((*a0)->rank == (*a1)->rank) {
+	if ((*a0)->rank == (*a1)->rank)
+	{
 
 		// On regarde qui sera la nouvelle racine.
-		if (inf((*(*a0)->data), (*(*a1)->data))) {
+		if (inf((*(*a0)->data), (*(*a1)->data)))
+		{
 			root = (*a0);
 			child = (*a1);
 		}
-		else {
+		else
+		{
 			root = (*a1);
 			child = (*a0);
 		}
 
 		// Assemblage.
-		if (root->listChild == NULL) {
+		if (root->listChild == NULL)
+		{
 			root->listChild = createListArbreBinomial(child);
 		}
-		else {
+		else
+		{
 			root->listChild = addAfter(&root->listChild, &child);
 		}
 
@@ -52,13 +59,15 @@ TB* merge(TB** a0, TB** a1) {
 
 		return root;
 	}
-	else {
+	else
+	{
 		return NULL;
 	}
 }
 
-listTB* createEmptyListTB() {
-	listTB* l = (listTB*)(malloc(sizeof(listTB)));
+listTB *createEmptyListTB()
+{
+	listTB *l = (listTB *)(malloc(sizeof(listTB)));
 
 	l->previous = NULL;
 	l->next = NULL;
@@ -67,8 +76,9 @@ listTB* createEmptyListTB() {
 	return l;
 }
 
-listTB* createListArbreBinomial(TB* data) {
-	listTB* list = (listTB*)(malloc(sizeof(listTB)));
+listTB *createListArbreBinomial(TB *data)
+{
+	listTB *list = (listTB *)(malloc(sizeof(listTB)));
 
 	list->previous = NULL;
 	list->next = NULL;
@@ -78,13 +88,15 @@ listTB* createListArbreBinomial(TB* data) {
 	return list;
 }
 
-listTB* addBefore(listTB** list, TB** element) {
-	listTB* ele = createListArbreBinomial((*element));
+listTB *addBefore(listTB **list, TB **element)
+{
+	listTB *ele = createListArbreBinomial((*element));
 
 	ele->next = (*list);
 
-	if ((*list)->previous != NULL) {
-		listTB* previous = (*list)->previous;
+	if ((*list)->previous != NULL)
+	{
+		listTB *previous = (*list)->previous;
 		previous->next = ele;
 	}
 
@@ -95,13 +107,15 @@ listTB* addBefore(listTB** list, TB** element) {
 	return (*list);
 }
 
-listTB* addAfter(listTB** list, TB** element) {
-	listTB* ele = createListArbreBinomial((*element));
+listTB *addAfter(listTB **list, TB **element)
+{
+	listTB *ele = createListArbreBinomial((*element));
 
 	ele->previous = (*list);
 
-	if ((*list)->next != NULL) {
-		listTB* next = (*list)->next;
+	if ((*list)->next != NULL)
+	{
+		listTB *next = (*list)->next;
 		next->previous = ele;
 	}
 
@@ -112,18 +126,21 @@ listTB* addAfter(listTB** list, TB** element) {
 	return (*list);
 }
 
-listTB* removeElement(listTB** element) {
+listTB *removeElement(listTB **element)
+{
 
-	listTB* tmpP = (*element)->previous;
-	listTB* tmpN = (*element)->next;
+	listTB *tmpP = (*element)->previous;
+	listTB *tmpN = (*element)->next;
 
-	if ((*element)->previous != NULL) {
-		listTB* previous = (*element)->previous;
+	if ((*element)->previous != NULL)
+	{
+		listTB *previous = (*element)->previous;
 		previous->next = (*element)->next;
 	}
 
-	if ((*element)->next != NULL) {
-		listTB* next = (*element)->next;
+	if ((*element)->next != NULL)
+	{
+		listTB *next = (*element)->next;
 		next->previous = (*element)->previous;
 	}
 
@@ -140,24 +157,28 @@ listTB* removeElement(listTB** element) {
 		return NULL;
 }
 
-FB* decapiteTB(TB** tb) {
+FB *decapiteTB(TB **tb)
+{
 	// La file qui va contenir les sous tournois binomaux.
-	FB* fb = createEmptyFileBinomiale();
+	FB *fb = createEmptyFileBinomiale();
 
 	// On regarde s'il le tournoiis n'est pas compose que d'une racine.
-	if ((*tb)->rank > 0) {
+	if ((*tb)->rank > 0)
+	{
 
 		fb->nbElement = (int)(pow(2, (*tb)->rank));
 
 		// La file du tournois.
-		listTB* ltb = (*tb)->listChild;
+		listTB *ltb = (*tb)->listChild;
 
 		int i = 0;
-		listTB* tmp = NULL;
-		while (ltb != NULL) {
-			listTB* l = createEmptyListTB();
+		listTB *tmp = NULL;
+		while (ltb != NULL)
+		{
+			listTB *l = createEmptyListTB();
 
-			if (i == 0) {
+			if (i == 0)
+			{
 
 				l->previous = NULL;
 
@@ -167,7 +188,9 @@ FB* decapiteTB(TB** tb) {
 				fb->listTree = l;
 
 				tmp = l;
-			} else {
+			}
+			else
+			{
 
 				// On fait le double chainage.
 				l->previous = tmp;
@@ -186,20 +209,21 @@ FB* decapiteTB(TB** tb) {
 		// Transformation en TB_0
 		(*tb)->rank = 0;
 		(*tb)->listChild = NULL;
-
 	}
 
 	return fb;
 }
 
-listTB** listTBToArray(listTB* tb) {
+listTB **listTBToArray(listTB *tb)
+{
 
-	listTB* current = tb;
+	listTB *current = tb;
 
 	// On cherche le rang maximal.
 	int maxRank = -1;
 
-	while (current != NULL) {
+	while (current != NULL)
+	{
 		if (current->data->rank > maxRank)
 			maxRank = current->data->rank;
 
@@ -208,16 +232,18 @@ listTB** listTBToArray(listTB* tb) {
 
 	// On cree notre tableau de listTB.
 
-	listTB** arrayListTB = (listTB**)(malloc(sizeof(listTB*) * maxRank));
+	listTB **arrayListTB = (listTB **)(malloc(sizeof(listTB *) * maxRank));
 
-	for (listTB** ite = arrayListTB; ite != arrayListTB + maxRank; ite++) {
+	for (listTB **ite = arrayListTB; ite != arrayListTB + maxRank; ite++)
+	{
 		*ite = NULL;
 	}
 
 	// On renmpli notre tableau.
 	current = tb;
 
-	while (current != NULL) {
+	while (current != NULL)
+	{
 
 		arrayListTB[current->data->rank] = current;
 
@@ -227,8 +253,9 @@ listTB** listTBToArray(listTB* tb) {
 	return arrayListTB;
 }
 
-char* toStringTB(TB* tb) {
-	char* array = (char*)(malloc(sizeof(char) * STRING_TB_SIZE));
+char *toStringTB(TB *tb)
+{
+	char *array = (char *)(malloc(sizeof(char) * STRING_TB_SIZE));
 
 	sprintf(array, "[TB_%d, root_data = %s]", tb->rank, toStringBigInt(tb->data));
 
