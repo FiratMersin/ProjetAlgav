@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
 	printf("file = \n");
 	displayFB(file);
 
-	printf("\n\n\ncurrent = %s", toStringTB(current->data));
+	printf("\n\n\ncurrent = %s\n", toStringTB(current->data));
 
 	printf("fb = \n");
 	displayFB(fb);

@@ -34,3 +34,6 @@ test.o : test.c
 md5.o : md5.c md5.h
 	gcc -w -c md5.c
 
+clean:
+	rm -f *.o
+

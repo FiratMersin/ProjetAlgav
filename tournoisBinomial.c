@@ -21,60 +21,11 @@ TB* createB0(bigInt* data) {
 	return a;
 }
 
-/*
-TB* merge(TB* a0, TB* a1) {
-	TB* root = NULL;
-	TB* child = NULL;
-
-	printf("a0 = %p\n", a0);
-	printf("a1 = %p\n", a1);
-
-	printf("a0->rank = %d\n", a0->rank);
-	printf("a1->rank = %d\n", a1->rank);
-
-	// On regarde si les deux arbres on bien le même rang.
-	if (a0->rank == a1->rank) {
-
-		printf("LADEDANS\n");
-
-		// On regarde qui sera la nouvelle racine.
-		if (inf(*a0->data, *a1->data)) {
-			root = a0;
-			child = a1;
-		}
-		else {
-			root = a1;
-			child = a0;
-		}
-
-		// Assemblage.
-		if (root->listChild == NULL) {
-			printf("OOPS\n");
-			root->listChild = createListArbreBinomial(child);
-		}
-		else {
-			printf("LA\n");
-			root->listChild = addAfter(root->listChild, child);
-		}
-
-		root->rank++;
-
-		child->parent = root;
-
-		return root;
-	}
-	else {
-		printf("DANS LA MOUISE\n");
-		return NULL;
-	}
-}
-*/
-
 TB* merge(TB** a0, TB** a1) {
 	TB* root = NULL;
 	TB* child = NULL;
 
-	// On regarde si les deux arbres on bien le même rang.
+	// On regarde si les deux arbres on bien le mï¿½me rang.
 	if ((*a0)->rank == (*a1)->rank) {
 
 		// On regarde qui sera la nouvelle racine.
@@ -161,36 +112,6 @@ listTB* addAfter(listTB* list, TB* element) {
 	return list;
 }
 
-/*
-listTB* removeElement(listTB* element) {
-
-	listTB* tmpP = element->previous;
-	listTB* tmpN = element->next;
-
-	if (element->previous != NULL) {
-		listTB* previous = element->previous;
-		previous->next = element->next;
-	}
-
-	if (element->next != NULL) {
-		listTB* next = element->next;
-		next->previous = element->previous;
-	}
-
-	element->previous = NULL;
-	element->next = NULL;
-
-	free(element);
-
-	if (tmpP != NULL)
-		return tmpP;
-	else if (tmpN != NULL)
-		return tmpN;
-	else
-		return NULL;
-}
-*/
-
 listTB* removeElement(listTB** element) {
 
 	listTB* tmpP = (*element)->previous;
@@ -220,12 +141,15 @@ listTB* removeElement(listTB** element) {
 }
 
 FB* decapiteTB(TB** tb) {
+	// La file qui va contenir les sous tournois binomaux.
 	FB* fb = createEmptyFileBinomiale();
 
+	// On regarde s'il le tournoiis n'est pas compose que d'une racine.
 	if ((*tb)->rank > 0) {
 
 		fb->nbElement = (int)(pow(2, (*tb)->rank));
 
+		// La file du tournois.
 		listTB* ltb = (*tb)->listChild;
 
 		int i = 0;
@@ -233,7 +157,8 @@ FB* decapiteTB(TB** tb) {
 		while (ltb != NULL) {
 			listTB* l = createEmptyListTB();
 
-			if (i = 0) {
+			if (i == 0) {
+
 				l->previous = NULL;
 
 				// Pas de copie de data.
@@ -243,8 +168,9 @@ FB* decapiteTB(TB** tb) {
 
 				tmp = l;
 			} else {
-				l->previous = tmp;
 
+				// On fait le double chainage.
+				l->previous = tmp;
 				tmp->next = l;
 
 				l->data = ltb->data;
@@ -254,7 +180,10 @@ FB* decapiteTB(TB** tb) {
 
 			ltb = ltb->next;
 
-			free(ltb->previous);
+			// Il ne faut pas free.
+			//free(ltb->previous);
+
+			i++;
 		}
 
 		// Transformation en TB_0
