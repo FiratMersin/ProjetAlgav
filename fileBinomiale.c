@@ -119,13 +119,20 @@ FB *unionFile(FB **f0, FB **f1)
 		while (iteF0 != NULL)
 		{
 			TB *currentElemF0 = iteF0->data;
+			listTB* tempoAdd = NULL;
 
 			if (elemToAdd->rank == currentElemF0->rank)
 			{
 				listTB *tmp = iteF0;
 
 				// On doit passer au suivant avant de remove l'element.
+				tempoAdd = iteF0;
 				iteF0 = iteF0->next;
+
+				// On se met sur le previous car iteF0 va etre remove.
+				if (iteF0 == NULL) {
+					tempoAdd = tempoAdd->previous;
+				}
 
 				elemToAdd = merge(&elemToAdd, &tmp->data);
 
@@ -140,9 +147,23 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 			else
 			{
+				tempoAdd = iteF0;
 				iteF0 = iteF0->next;
 			}
+
+			// Si on a pas pu s'ajoute alors qu'on est en fin de liste.
+			if (iteF0 == NULL) {
+				addAfter(&tempoAdd, &elemToAdd);
+			}
 		}
+
+		// On met a jour le pointer de la liste de f0.
+		// Le pointeur doit toujours pointer au debut de la liste.
+		if ((*f0)->listTree != NULL)
+			while ((*f0)->listTree->previous != NULL)
+			{
+				(*f0)->listTree = (*f0)->listTree->previous;
+			}
 
 		// On a ajoute l'element de f1 on le supprime
 		listTB *elemToDel = iteF1;
