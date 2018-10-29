@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 
 	char *filename = "cles_alea/jeu_1_nb_cles_50000.txt";
 	FILE *f = fopen(filename, "r");
-	FILE *f1 = fopen("cles_alea/jeu_2_nb_cles_5000.txt", "r");
+	FILE *f1 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
 
 	char line[101];
 
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 		fb0 = ajout(fb0, bi0);
 	}
 
-	for (i = 0; i < 4999; i++)
+	for (i = 0; i < 49999; i++)
 	{
 		GetChaine(f1, 100, line);
 		bi1 = creerBigInt(line);
@@ -87,6 +87,16 @@ int main(int argc, char **argv)
 
 	fclose(f);
 	fclose(f1);
+
+	printf("\n\n\n**************************************************************************************\n\n\n");
+
+	printf("On enleve le minimum\n");
+
+	bigInt* bMin = supprMin(&fbUnion);
+
+	printf("bMin = %s\n", toStringBigInt(bMin));
+
+	displayFB(fbUnion);
 
 	return 0;
 }

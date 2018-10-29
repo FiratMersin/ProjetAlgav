@@ -91,8 +91,36 @@ FB *ajout(FB *file, bigInt *element)
 
 bigInt *supprMin(FB **file)
 {
-	// TODO
-	return NULL;
+	listTB *ite = (*file)->listTree;
+
+	listTB *min = ite;
+
+	// On cherche le minimum.
+	while (ite != NULL)
+	{
+		bigInt *b = ite->data->data;
+
+		if (inf(*b, *min->data->data))
+		{
+			min = ite;
+		}
+
+		ite = ite->next;
+	}
+
+	bigInt* bMin = min->data->data;
+	TB* tbMin = min->data;
+
+	// On supprime l'element de la liste des TB.
+	removeElement(&min);
+
+	// On decapite le TB.
+	FB* fbDecapite = decapiteTB(&tbMin);
+
+	// On unie les deux file.
+	(*file) = unionFile(file, &fbDecapite);
+
+	return bMin;
 }
 
 FB *constIter(FB *file, bigInt *tabElement, int size)
@@ -119,7 +147,7 @@ FB *unionFile(FB **f0, FB **f1)
 		while (iteF0 != NULL)
 		{
 			TB *currentElemF0 = iteF0->data;
-			listTB* tempoAdd = NULL;
+			listTB *tempoAdd = NULL;
 
 			if (elemToAdd->rank == currentElemF0->rank)
 			{
@@ -130,7 +158,8 @@ FB *unionFile(FB **f0, FB **f1)
 				iteF0 = iteF0->next;
 
 				// On se met sur le previous car iteF0 va etre remove.
-				if (iteF0 == NULL) {
+				if (iteF0 == NULL)
+				{
 					tempoAdd = tempoAdd->previous;
 				}
 
@@ -152,7 +181,8 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 
 			// Si on a pas pu s'ajoute alors qu'on est en fin de liste.
-			if (iteF0 == NULL) {
+			if (iteF0 == NULL)
+			{
 				addAfter(&tempoAdd, &elemToAdd);
 			}
 		}
