@@ -7,7 +7,7 @@
 typedef struct	{
 	int nbmax;
 	int nbelem;	
-	bigInt *tab;//tab est de taille nbmax+1, la racine est à l'indice 1
+	bigInt **tab;//tab est de taille nbmax+1, la racine est à l'indice 1
 }tasTab;	
 
 
@@ -15,7 +15,7 @@ typedef struct	{
 
 bigInt SupprMin(tasTab *t);
 
-void Ajout(tasTab *t, bigInt add);
+void Ajout(tasTab *t, bigInt *add);
 
 void ConsIter(tasTab **t, bigInt **adds, int taille);
 

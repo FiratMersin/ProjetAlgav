@@ -12,12 +12,9 @@ typedef struct	{
 	unsigned int entier4;
 }bigInt;
 
-
-// bigInt *creerBigInt();
-
 bigInt *creerBigInt(char *initBint);
 
-bigInt *copier(bigInt bi);
+bigInt *copier(bigInt *bi);
 
 void freeBigInt(bigInt *bi);
 
@@ -30,6 +27,8 @@ unsigned int getEntier(char *hex, int start, int end);
 int inf(bigInt cle1, bigInt cle2);//retourne 1 si cle1 < cle2 et 0 sinon
 
 int eg(bigInt cle1, bigInt cle2);//retourne 1 si cle1 == cle2 et 0 sinon
+
+int cmpBigInt(bigInt cle1, bigInt cle2);//retoune 1 si cle1 > cle2, -1 si cle1 < cle2, 0 sinon
 
 #endif
 

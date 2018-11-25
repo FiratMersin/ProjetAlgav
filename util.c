@@ -16,16 +16,16 @@ bigInt *creerBigInt(char *initBint){//crée un bigInt à partir d'un String
 	return bi;
 }
 
-bigInt *copier(bigInt bi){//crée une copie d'un bigInt
+bigInt *copier(bigInt *bi){//crée une copie d'un bigInt
 	bigInt * c = (bigInt *) malloc(sizeof(bigInt));
 	if(c == NULL){
 		printf("error malloc copie BigInt\n");
 		return NULL;
 	}
-	c->entier1 = bi.entier1;
-	c->entier2 = bi.entier2;
-	c->entier3 = bi.entier3;
-	c->entier4 = bi.entier4;
+	c->entier1 = bi->entier1;
+	c->entier2 = bi->entier2;
+	c->entier3 = bi->entier3;
+	c->entier4 = bi->entier4;
 	return c;
 }
 
@@ -82,3 +82,15 @@ int eg(bigInt cle1, bigInt cle2){
 		return 1;
 	return 0;
 }
+
+int cmpBigInt(bigInt cle1, bigInt cle2){
+	if(inf(cle1, cle2) == 1){
+		return -1;
+	}else if(eg(cle1, cle2) == 1){
+		return 0;
+	}else{
+		return 1;
+	}
+}
+
+

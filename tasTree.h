@@ -8,7 +8,7 @@ typedef struct	tasT{
 	struct tasT *pere;
 	struct tasT *fg;//fils gauche
 	struct tasT *fd;//fils droit
-	bigInt value;
+	bigInt *value;
 }noeud;
 
 typedef struct{

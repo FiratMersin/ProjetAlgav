@@ -4,27 +4,25 @@
 #include <math.h>
 
 
-////////////////////////////////////////
-
-bigInt SupprMin_t(tasTree **t){//OK
-	bigInt supp = ((*t)->tas->value);
+bigInt SupprMin_t(tasTree **t){
+	bigInt *supp = ((*t)->tas->value);
 	(*t)->nbelem--;
 	noeud **cible = getNode(t, 0);
 	if((*t)->nbelem == 0){
 		freeNode(cible);
-		return supp;
+		return *supp;
 	}
 	echanger_t( &((*t)->tas), cible);
 	freeNode(cible);//on libère le noeud et cible = null
 	descendre_t(&((*t)->tas));//on descend la racine
-	return supp;
+	return *supp;
 }
 
 
-void Ajout_t(tasTree **t, bigInt *add){//OK
+void Ajout_t(tasTree **t, bigInt *add){
 	noeud ** cible = getNode(t, 1);//on récupère le noeud vide le plus à gauche
 	(*t)->nbelem++;
-	(*cible)->value = *add;
+	(*cible)->value = copier(add);
 	monter_t(cible);//on monte le noeud qu'on vient d'ajouter
 }
 
@@ -32,7 +30,7 @@ void Ajout_t(tasTree **t, bigInt *add){//OK
 void Ajout_sans_monter(tasTree **t, bigInt *add){
 	noeud ** cible = getNode(t, 1);//on récupère le noeud vide le plus à gauche
 	(*t)->nbelem++;
-	(*cible)->value = *add;
+	(*cible)->value = copier(add);
 }
 
 void ConsIter_t(tasTree **t, bigInt **adds, int taille){
@@ -62,7 +60,7 @@ void ConsIter_t(tasTree **t, bigInt **adds, int taille){
 
 void ajouter_all_sans_monter(tasTree **t, noeud *n){
 	if(n != NULL){
-		Ajout_sans_monter(t , &n->value);
+		Ajout_sans_monter(t , n->value);
 		ajouter_all_sans_monter(t, n->fg);
 		ajouter_all_sans_monter(t, n->fd);
 	}
@@ -91,13 +89,13 @@ tasTree *Union_t(tasTree *t1, tasTree *t2){//à implémenter en O(n+m) n+m = nb 
 	return t;
 }
 
-//////////////////////////////////////
 
 
 void initNoeud(noeud **n, noeud *pere){
 	*n = (noeud *)malloc(sizeof(noeud));
 	(*n)->fd = NULL;
 	(*n)->fg = NULL;
+	(*n)->value = NULL;
 	(*n)->pere = pere;
 }
 
@@ -113,22 +111,6 @@ tasTree *init_t(int taillemax){
 	initNoeud(&(t->tas), NULL);
 	return t;
 }
-
-/*
-tasTree *getFromFile_t(FILE *f, int taille){//initialise un tasTree à partir d'un fichier
-	 char str[101];
-	 bigInt **tab=(bigInt**)malloc(sizeof(bigInt*)*taille);
-	 int i;
-	 tasTree *t = init_t(taille);;
-	 for(i=0; i<taille; ++i){
-		 GetChaine(f, 100, str);
-		 tab[i] = creerBigInt(str);
-		//Ajout_t(&t, creerBigInt(str));
-	 }
-	 ConsIter_t(&t ,tab, taille);
-	 return t;
-}
-*/
 
 tasTree *getFromFile_t(FILE *f, int taille){//union des deux moitier du fichier
 	 char str[101];
@@ -156,7 +138,7 @@ tasTree *getFromFile_t(FILE *f, int taille){//union des deux moitier du fichier
 
 
 void echanger_t(noeud **n, noeud **t){//On échange seulement la valeur des noeuds
-	bigInt tmp = (*n)->value;
+	bigInt *tmp = (*n)->value;
 	(*n)->value = (*t)->value;
 	(*t)->value = tmp;
 }
@@ -204,8 +186,8 @@ noeud **getNode(tasTree **t, int cas){//1 = ajout 0 = suppr (ou recuperer un noe
 
 void monter_t(noeud **n){//monter au père jusqu'à la racine ou stop juste avant un père plus petit
 	if(hasPere_t(*n)){
-		if(  (! inf( ((*n)->pere->value), ((*n)->value)) )
-			  && (! eg( ((*n)->pere->value), ((*n)->value) ) )){
+		if(  (! inf( *((*n)->pere->value), *((*n)->value)) )
+			  && (! eg( *((*n)->pere->value), *((*n)->value) ) )){
 			echanger_t(n, &((*n)->pere));
 			monter_t(&((*n)->pere));//récursion sur pere
 		}
@@ -215,7 +197,7 @@ void monter_t(noeud **n){//monter au père jusqu'à la racine ou stop juste avan
 void descendre_t(noeud **n){//descend tant que différent d'une feuille et au moins un fils plus petitS
 	if(! estFeuille_t(*n)){
 		noeud ** filsmin=plusPetitFils_t(*n);
-		if( inf( ((*filsmin)->value) , ((*n)->value)) ){
+		if( inf( *((*filsmin)->value) , *((*n)->value)) ){
 			echanger_t(filsmin, n);
 			descendre_t(filsmin);//récursion sur filsmin
 		}
@@ -230,7 +212,7 @@ noeud **plusPetitFils_t(noeud *n){
 	if(! hasFilsDroit_t(n)){
 		return &(n->fg);
 	}else{
-		return ( inf( (n->fg->value) , (n->fd->value)) ) ? &(n->fg) : &(n->fd);
+		return ( inf( *(n->fg->value) , *(n->fd->value)) ) ? &(n->fg) : &(n->fd);
 	}
 }
 
@@ -241,7 +223,7 @@ int estFeuille_t(noeud *n){
 
 void afficheArbre(noeud *n){
 	if(n != NULL){
-		afficheBigInt(&(n->value));
+		afficheBigInt(n->value);
 		afficheArbre(n->fg);
 		afficheArbre(n->fd);
 

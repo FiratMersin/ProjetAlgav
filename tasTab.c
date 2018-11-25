@@ -4,19 +4,19 @@
 
 bigInt SupprMin(tasTab *t){
 	echanger(t, racine(), t->nbelem);
-	bigInt suppr = t->tab[t->nbelem];
+	bigInt *suppr = t->tab[t->nbelem];
 	t->nbelem--;
 	descendre(t, racine());
-	return suppr;
+	return *suppr;
 }
 
-void Ajout(tasTab *t, bigInt add){
+void Ajout(tasTab *t, bigInt *add){
 	if(t->nbelem == t->nbmax){
 		printf("Erreur : insertion dans un tasTab plein !");
 		exit(0);
 	}
 	t->nbelem++;//augmente le nombre d'élément dans le tas
-	t->tab[t->nbelem] = *(copier(add));//on place le nouvel élément dans la première feuille vide
+	t->tab[t->nbelem] = copier(add);//on place le nouvel élément dans la première feuille vide
 	monter(t, t->nbelem);
 }
 
@@ -26,7 +26,7 @@ void Ajoutsans_monter(tasTab *t, bigInt *add){
 			exit(0);
 	}
 	t->nbelem++;
-	t->tab[t->nbelem] = *add;
+	t->tab[t->nbelem] = copier(add);
 }
 
 void ConsIter(tasTab **t, bigInt **adds, int taille){//a modifier
@@ -51,15 +51,15 @@ tasTab *Union(tasTab *t1, tasTab *t2){
 	int i;
 	if(t1->nbelem == t2->nbelem){
 		for(i = 1; i<=t1->nbelem; i++){
-			Ajoutsans_monter(tu, &t1->tab[i]);
-			Ajoutsans_monter(tu, &t2->tab[i]);
+			Ajoutsans_monter(tu, t1->tab[i]);
+			Ajoutsans_monter(tu, t2->tab[i]);
 		}
 	}else{
 		for(i = 1; i<=t1->nbelem; i++){
-			Ajoutsans_monter(tu, &t1->tab[i]);
+			Ajoutsans_monter(tu, t1->tab[i]);
 		}
 		for(i = 1; i<=t2->nbelem; i++){
-			Ajoutsans_monter(tu, &t2->tab[i]);
+			Ajoutsans_monter(tu, t2->tab[i]);
 		}
 	}
 	int h =  ((int)(log10(tu->nbelem)/log10(2)));
@@ -70,14 +70,13 @@ tasTab *Union(tasTab *t1, tasTab *t2){
 	return tu;
 }
 
-//////////////////////////////////////
 
 
 tasTab *init(int nbmax){
 	tasTab *t = (tasTab*)malloc(sizeof(tasTab));
 	t->nbmax = nbmax;
 	t->nbelem = 0;
-	t->tab = (bigInt *)malloc(sizeof(bigInt) * (nbmax +1));
+	t->tab = (bigInt **)malloc(sizeof(bigInt*) * (nbmax +1));
 	return t;
 
 }
@@ -94,7 +93,7 @@ int racine(){
 }
 
 void echanger(tasTab *t, int j, int k){
-	bigInt tmp = t->tab[j];
+	bigInt *tmp = t->tab[j];
 	t->tab[j] = t->tab[k];
 	t->tab[k] = tmp;
 }
@@ -135,7 +134,7 @@ int plusPetitFils(tasTab *t, int i){// avant d'utiliser cette fonction tester si
 		}else{
 			int fg=filsGauche(i);// fg = indice
 			int fd=filsDroit(i);// fd = indice
-			return ( inf(t->tab[fg] , t->tab[fd]) ) ? fg : fd;
+			return ( inf( *(t->tab[fg]) , *(t->tab[fd])) ) ? fg : fd;
 		}
 }
 
@@ -150,8 +149,8 @@ int pere(int i){
 void monter(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
 	if(hasPere(j)){
 		int p=pere(j);// p = indice
-		if(  (! inf(t->tab[p],t->tab[j]) )
-		  && (! eg(t->tab[p],t->tab[j]) )){
+		if(  (! inf( *(t->tab[p]), *(t->tab[j])) )
+		  && (! eg( *(t->tab[p]), *(t->tab[j])) )){
 			echanger(t,j,p);
 			monter(t, p);
 		}
@@ -161,7 +160,7 @@ void monter(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la
 void descendre(tasTab *t, int j){//retourne le nouvelle indice de l'élément à la position j
 	if(! estFeuille(t,j)){
 		int filsmin=plusPetitFils(t,j);// filsmin = indice
-		if( inf(t->tab[filsmin] , t->tab[j]) ){
+		if( inf( *(t->tab[filsmin]) , *(t->tab[j])) ){
 			echanger(t,filsmin,j);
 			descendre(t, filsmin);
 		}
