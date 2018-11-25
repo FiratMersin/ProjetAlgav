@@ -43,11 +43,13 @@ menu.o : menu.c
 md5.o : md5.c md5.h
 	gcc -w -c md5.c
 
+
 AVL.o : AVL.c AVL.h
 	gcc -c AVL.c
 
 fromFile.o : fromFile.c fromFile.h
 	gcc -c fromFile.c
-	
+
 clean:
-	rm -rf *.o
+	rm -f *.o
+
