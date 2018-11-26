@@ -6,6 +6,8 @@
 #include "fileBinomiale.h"
 #include "fileReader.h"
 
+#define SIZE 50000
+
 int main(int argc, char **argv)
 {
 
@@ -15,11 +17,17 @@ int main(int argc, char **argv)
 
 	char line[101];
 
+	bigInt *arrayBigInt = (bigInt *)(malloc(sizeof(bigInt) * SIZE));
+
 	GetChaine(f, 100, line);
 	bigInt *bi0 = creerBigInt(line);
+	arrayBigInt[0] = *creerBigInt(line);
+
+	printf("ArrayBigInt[0] = %s\n", toStringBigInt(&arrayBigInt[0]));
 
 	GetChaine(f1, 100, line);
 	bigInt *bi1 = creerBigInt(line);
+
 
 	printf("\n\n\n**************************************************************************************\n\n\n");
 
@@ -54,14 +62,15 @@ int main(int argc, char **argv)
 
 	int i = 0;
 
-	for (i = 0; i < 49999; i++)
+	for (i = 0; i < SIZE - 1; i++)
 	{
 		GetChaine(f, 100, line);
 		bi0 = creerBigInt(line);
 		fb0 = ajout(fb0, bi0);
+		arrayBigInt[i + 1] = *creerBigInt(line);
 	}
 
-	for (i = 0; i < 49999; i++)
+	for (i = 0; i < SIZE - 1; i++)
 	{
 		GetChaine(f1, 100, line);
 		bi1 = creerBigInt(line);
@@ -92,11 +101,19 @@ int main(int argc, char **argv)
 
 	printf("On enleve le minimum\n");
 
-	bigInt* bMin = supprMin(&fbUnion);
+	bigInt *bMin = supprMin(&fbUnion);
 
 	printf("bMin = %s\n", toStringBigInt(bMin));
 
 	displayFB(fbUnion);
+
+	printf("\n\n\n**************************************************************************************\n\n\n");
+
+	printf("Test de FBR\n");
+
+	FB* resFBR = constIter(arrayBigInt, SIZE);
+
+	displayFB(resFBR);
 
 	return 0;
 }

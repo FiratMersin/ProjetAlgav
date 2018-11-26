@@ -17,7 +17,7 @@ Renvoie le minimum.
 */
 bigInt *supprMin(FB **file);
 
-FB *constIter(FB *file, bigInt *tabElement, int size);
+FB *constIter(bigInt *tabElement, int size);
 
 /*
 Fait l'union de 2 files binomiales.
@@ -28,5 +28,21 @@ Renvoie la file binomiale resultante.
 FB *unionFile(FB **f0, FB **f1);
 
 void displayFB(FB *fb);
+
+// FBR
+
+FBR *createEmptyFBR();
+
+FBR *ajoutInFBR(FBR **fbr, TB *tb);
+
+FBR *consolider(FBR **fbr);
+
+/* 
+Transforme la FBR en FB.
+La FBR devient inutilisable.
+*/
+FB *FBRToFB(FBR **fbr);
+
+void displayFBR(FBR *fbr);
 
 #endif

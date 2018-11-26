@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "util.h"
 #include "tournoisBinomial.h"
@@ -108,14 +109,14 @@ bigInt *supprMin(FB **file)
 		ite = ite->next;
 	}
 
-	bigInt* bMin = min->data->data;
-	TB* tbMin = min->data;
+	bigInt *bMin = min->data->data;
+	TB *tbMin = min->data;
 
 	// On supprime l'element de la liste des TB.
 	removeElement(&min);
 
 	// On decapite le TB.
-	FB* fbDecapite = decapiteTB(&tbMin);
+	FB *fbDecapite = decapiteTB(&tbMin);
 
 	// On unie les deux file.
 	(*file) = unionFile(file, &fbDecapite);
@@ -123,10 +124,30 @@ bigInt *supprMin(FB **file)
 	return bMin;
 }
 
-FB *constIter(FB *file, bigInt *tabElement, int size)
+FB *constIter(bigInt *tabElement, int size)
 {
-	// TODO
-	return NULL;
+
+	FBR *fbr = createEmptyFBR();
+
+	int consolidation = 50;
+
+	int i = 0;
+	for (i = 0; i < size; i++)
+	{
+		TB *tb0 = createB0(&tabElement[i]);
+
+		ajoutInFBR(&fbr, tb0);
+
+		if (i % consolidation == 0 && i != 0)
+		{
+			consolider(&fbr);
+		}
+	}
+
+	// On consolide une derniere fois.
+	consolider(&fbr);
+
+	return FBRToFB(&fbr);
 }
 
 FB *unionFile(FB **f0, FB **f1)
@@ -233,5 +254,128 @@ void displayFB(FB *fb)
 	else
 	{
 		printf("FB vide\n");
+	}
+}
+
+// FBR
+
+FBR *createEmptyFBR()
+{
+	FBR *file = (FBR *)(malloc(sizeof(FBR)));
+
+	file->nbElement = 0;
+	file->listTree = NULL;
+
+	return file;
+}
+
+FBR *ajoutInFBR(FBR **file, TB *tb)
+{
+	(*file)->nbElement += pow(2, tb->rank);
+
+	if ((*file)->listTree == NULL)
+	{
+		(*file)->listTree = createListArbreBinomial(tb);
+	}
+	else
+	{
+		(*file)->listTree = addAfter(&(*file)->listTree, &tb);
+	}
+
+	listTB *ite = (*file)->listTree;
+
+	while (ite->previous) {
+		ite = ite->previous;
+	}
+
+	(*file)->listTree;
+
+	return (*file);
+}
+
+FBR *consolider(FBR **file)
+{
+	int nbTB = (int)(log2((*file)->nbElement) + 1);
+
+	TB **arrayTB = (TB **)(malloc(sizeof(TB *) * (nbTB)));
+
+	int i = 0;
+	for (i = 0; i < nbTB; i++)
+	{
+		arrayTB[i] = NULL;
+	}
+
+	listTB *ite = (*file)->listTree;
+
+	while (ite)
+	{
+		TB *w = ite->data;
+		int a = w->rank;
+
+		TB *t = arrayTB[a];
+
+		for (i = a; i < nbTB && arrayTB[i]; i++)
+		{
+			w = merge(&w, &arrayTB[i]);
+
+			arrayTB[i] = NULL;
+		}
+
+		arrayTB[i] = w;
+
+		listTB *next = ite->next;
+
+		removeElement(&ite);
+
+		ite = next;
+	}
+
+	for (i = 0; i < nbTB; i++)
+	{
+		if (arrayTB[i])
+		{
+			ajoutInFBR(file, arrayTB[i]);
+		}
+	}
+
+	return *file;
+}
+
+FB *FBRToFB(FBR **fbr)
+{
+	FB *fb = createEmptyFileBinomiale();
+
+	fb->nbElement = (*fbr)->nbElement;
+	fb->listTree = (*fbr)->listTree;
+
+	free(*fbr);
+
+	return fb;
+}
+
+void displayFBR(FBR *fbr)
+{
+	listTB *list = fbr->listTree;
+
+	if (list != NULL)
+	{
+
+		printf("\n\nDEB_FBR-------------------------------\n\n");
+
+		while (list != NULL)
+		{
+
+			TB *data = list->data;
+
+			printf("%s\n", toStringTB(data));
+
+			list = list->next;
+		}
+
+		printf("\nEND_FBR-------------------------------\n\n");
+	}
+	else
+	{
+		printf("FBR vide\n");
 	}
 }

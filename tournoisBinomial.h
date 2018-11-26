@@ -44,9 +44,19 @@ typedef struct
 	Pointe toujours sur le debut de la liste.
 	*/
 	listTB *listTree;
-
-	// TODO
 } FB;
+
+typedef struct
+{
+	int nbElement;
+
+	/*
+	Liste de TB.
+	Point toujours sur le debut de la liste.
+	Les TB peuvent avoir les memes degre.
+	*/
+	listTB *listTree;
+} FBR;
 
 /*
 Cree un arbre B0 avec une racine ayant pour data la data entree en parametres.
