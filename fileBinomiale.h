@@ -35,6 +35,8 @@ FBR *createEmptyFBR();
 
 FBR *ajoutInFBR(FBR **fbr, TB *tb);
 
+FBR *ajoutInFBRNoTouchNBElement(FBR **fbr, TB *tb);
+
 FBR *consolider(FBR **fbr);
 
 /* 

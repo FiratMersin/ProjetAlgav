@@ -147,6 +147,8 @@ FB *constIter(bigInt *tabElement, int size)
 	// On consolide une derniere fois.
 	consolider(&fbr);
 
+	printf("NB element FBR = %d\n", fbr->nbElement);
+
 	return FBRToFB(&fbr);
 }
 
@@ -239,6 +241,8 @@ void displayFB(FB *fb)
 
 		printf("\n\nDEB_FB-------------------------------\n\n");
 
+		printf("NBElement = %d\n", fb->nbElement);
+
 		while (list != NULL)
 		{
 
@@ -271,7 +275,7 @@ FBR *createEmptyFBR()
 
 FBR *ajoutInFBR(FBR **file, TB *tb)
 {
-	(*file)->nbElement += pow(2, tb->rank);
+	(*file)->nbElement += (int)pow(2, tb->rank);
 
 	if ((*file)->listTree == NULL)
 	{
@@ -284,17 +288,44 @@ FBR *ajoutInFBR(FBR **file, TB *tb)
 
 	listTB *ite = (*file)->listTree;
 
-	while (ite->previous) {
+	while (ite->previous)
+	{
 		ite = ite->previous;
 	}
 
-	(*file)->listTree;
+	(*file)->listTree = ite;
+
+	return (*file);
+}
+
+FBR *ajoutInFBRNoTouchNBElement(FBR **file, TB *tb)
+{
+	if ((*file)->listTree == NULL)
+	{
+		(*file)->listTree = createListArbreBinomial(tb);
+	}
+	else
+	{
+		(*file)->listTree = addAfter(&(*file)->listTree, &tb);
+	}
+
+	listTB *ite = (*file)->listTree;
+
+	while (ite->previous)
+	{
+		ite = ite->previous;
+	}
+
+	(*file)->listTree = ite;
 
 	return (*file);
 }
 
 FBR *consolider(FBR **file)
 {
+
+	static int s = 0;
+
 	int nbTB = (int)(log2((*file)->nbElement) + 1);
 
 	TB **arrayTB = (TB **)(malloc(sizeof(TB *) * (nbTB)));
@@ -307,14 +338,20 @@ FBR *consolider(FBR **file)
 
 	listTB *ite = (*file)->listTree;
 
+	// if (s <= 10) {
+	// 	printf("0 Nbelement = %d\n", (*file)->nbElement);
+	// }
+
+	int j = 0;
+
 	while (ite)
 	{
 		TB *w = ite->data;
-		int a = w->rank;
+		int rank = w->rank;
 
-		TB *t = arrayTB[a];
+		TB *t = arrayTB[rank];
 
-		for (i = a; i < nbTB && arrayTB[i]; i++)
+		for (i = rank; i < nbTB && arrayTB[i]; i++)
 		{
 			w = merge(&w, &arrayTB[i]);
 
@@ -325,18 +362,44 @@ FBR *consolider(FBR **file)
 
 		listTB *next = ite->next;
 
+		int element = (int)(pow(2, rank));
+
+		// if (s <= 10) {
+		// 	printf("j = %d, rank = %d, NBelement = %d, element = %d\n", j, rank, (*file)->nbElement, element);
+		// }
+
+		(*file)->nbElement -= element;
+
 		removeElement(&ite);
 
 		ite = next;
+
+		j++;
 	}
+
+	(*file)->listTree = NULL;
+
+	// if (s <= 10) {
+	// 	printf("1 Nbelement = %d\n", (*file)->nbElement);
+	// 	printf("1 File->listTree = %p\n", (*file)->listTree);
+	// }
 
 	for (i = 0; i < nbTB; i++)
 	{
 		if (arrayTB[i])
 		{
+
+			// printf("i = %d, rank = %d\n", i , arrayTB[i]->rank);
+
 			ajoutInFBR(file, arrayTB[i]);
 		}
 	}
+
+	// if (s <= 10) {
+	// 	printf("2 Nbelement = %d\n", (*file)->nbElement);
+	// }
+
+	s++;
 
 	return *file;
 }

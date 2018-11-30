@@ -115,5 +115,11 @@ int main(int argc, char **argv)
 
 	displayFB(resFBR);
 
+	printf("On enleve le minimum de la FBR\n");
+
+	bigInt *minFBR = supprMin(&resFBR);
+
+	printf("Minimum de resFBR = %s\n", toStringBigInt(minFBR));
+
 	return 0;
 }
