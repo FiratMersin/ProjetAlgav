@@ -39,6 +39,8 @@ int main(int argc, char** argv) {
 	a[3] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
 	a[4] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
 
+	////////////////////////////////////////////////////////////////////////////////////////
+
 	filebi1 = fopen("cles_alea/jeu_1_nb_cles_100.txt", "r");
 	filebi2 = fopen("cles_alea/jeu_2_nb_cles_100.txt", "r");
 	filebi3 = fopen("cles_alea/jeu_3_nb_cles_100.txt", "r");
@@ -66,7 +68,305 @@ int main(int argc, char** argv) {
 
 	temps_initial = clock();
 
-	// TODO
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_200.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_200.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_200.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_200.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_200.txt", "r");
+
+	taille = 200;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_500.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_500.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_500.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_500.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_500.txt", "r");
+
+	taille = 500;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_1000.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_1000.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_1000.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_1000.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_1000.txt", "r");
+
+	taille = 1000;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_10000.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_10000.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_10000.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_10000.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_10000.txt", "r");
+
+	taille = 10000;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_20000.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_20000.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_20000.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_20000.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_20000.txt", "r");
+
+	taille = 20000;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB = ajout(resFB, a[j]);
+		}
+
+		resFB = createEmptyFileBinomiale();
+	}
+
+	temps_final = clock();
+	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
+
+	temps_cpu /= 5.0;
+
+	fprintf(resfile, "%d %f\n", taille,temps_cpu);
+
+	fclose(filebi1);
+	fclose(filebi2);
+	fclose(filebi3);
+	fclose(filebi4);
+	fclose(filebi5);
+
+		////////////////////////////////////////////////////////////////////////////////////////
+
+	filebi1 = fopen("cles_alea/jeu_1_nb_cles_50000.txt", "r");
+	filebi2 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
+	filebi3 = fopen("cles_alea/jeu_3_nb_cles_50000.txt", "r");
+	filebi4 = fopen("cles_alea/jeu_4_nb_cles_50000.txt", "r");
+	filebi5 = fopen("cles_alea/jeu_5_nb_cles_50000.txt", "r");
+
+	taille = 50000;
+
+	for(i=0; i<taille; ++i){
+		GetChaine(filebi1, 100, str);
+		a[0][i] = * (creerBigInt(str));
+
+		GetChaine(filebi2, 100, str);
+		a[1][i] = * (creerBigInt(str));
+
+		GetChaine(filebi3, 100, str);
+		a[2][i] = * (creerBigInt(str));
+
+		GetChaine(filebi4, 100, str);
+		a[3][i] = * (creerBigInt(str));
+
+		GetChaine(filebi5, 100, str);
+		a[4][i] = * (creerBigInt(str));
+	}
+
+	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
 	 	for (i = 0; i < taille; i++) {

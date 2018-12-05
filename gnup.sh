@@ -1,4 +1,4 @@
-plot "ConIterFB.time" with lines
+plot "AjoutFB.time" with lines
 set term postscript landscape
 set output "Graphe_temps_execution_FB.ps"
 set size 2, 1
