@@ -28,6 +28,7 @@ FILE *filebi4;
 FILE *filebi5;
 FILE *resfile = fopen(argv[1], "w");
 FB* resFBR100;
+
 bigInt *aB1 = (bigInt *)(malloc(sizeof(bigInt) * 250000));
 bigInt *aB2 = (bigInt *)(malloc(sizeof(bigInt) * 250000));
 bigInt *aB3 = (bigInt *)(malloc(sizeof(bigInt) * 250000));
@@ -389,6 +390,6 @@ fclose(filebi5);
 
 fclose(resfile);
 
-
+return 0;
 
 }

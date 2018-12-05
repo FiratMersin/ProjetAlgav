@@ -1,6 +1,9 @@
-all: main mainFileBinomiale menu tmain
+all: main mainFileBinomiale menu tmain amain
 
 #executables
+
+amain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o ajoutFBComplexmain.o fileBinomiale.o tournoisBinomial.o
+	gcc -o amain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o ajoutFBComplexmain.o -lm
 
 tmain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o grpmain.o fileBinomiale.o tournoisBinomial.o
 	gcc -o tmain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o grpmain.o -lm
@@ -15,6 +18,9 @@ mainFileBinomiale: mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o
 	gcc -o mainFileBinomiale mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o fileReader.o -lm
 	
 #.o
+
+ajoutFBComplexmain.o: ajoutFBComplexmain.c
+	gcc -c ajoutFBComplexmain.c
 
 grpmain.o : grpmain.c
 	gcc -c grpmain.c
