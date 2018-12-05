@@ -131,7 +131,7 @@ FB *constIter(bigInt *tabElement, int size)
 
 	FBR *fbr = createEmptyFBR();
 
-	int consolidation = 50;
+	int consolidation = 250;
 
 	int i = 0;
 	for (i = 0; i < size; i++)
@@ -142,16 +142,14 @@ FB *constIter(bigInt *tabElement, int size)
 
 		ajoutInFBR(&fbr, tb0);
 
-		if (i % consolidation == 0 && i != 0)
-		{
-			consolider(&fbr);
-		}
+		// if (i % consolidation == 0 && i != 0)
+		// {
+		// 	consolider(&fbr);
+		// }
 	}
 
 	// On consolide une derniere fois.
 	consolider(&fbr);
-
-	printf("NB element FBR = %d\n", fbr->nbElement);
 
 	return FBRToFB(&fbr);
 }
