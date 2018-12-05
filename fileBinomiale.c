@@ -20,6 +20,8 @@ FB *createEmptyFileBinomiale()
 FB *ajout(FB *file, bigInt *element)
 {
 
+	element = copier(element);
+
 	file->nbElement++;
 
 	if (file->listTree == NULL)
@@ -134,7 +136,9 @@ FB *constIter(bigInt *tabElement, int size)
 	int i = 0;
 	for (i = 0; i < size; i++)
 	{
-		TB *tb0 = createB0(&tabElement[i]);
+		bigInt *b = copier(&tabElement[i]);
+
+		TB *tb0 = createB0(b);
 
 		ajoutInFBR(&fbr, tb0);
 
