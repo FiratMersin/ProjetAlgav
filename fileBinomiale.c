@@ -176,6 +176,7 @@ FB *unionFile(FB **f0, FB **f1)
 
 			if (elemToAdd->rank == currentElemF0->rank)
 			{
+
 				listTB *tmp = iteF0;
 
 				// On doit passer au suivant avant de remove l'element.
@@ -194,6 +195,7 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 			else if (elemToAdd->rank < currentElemF0->rank)
 			{
+
 				// On a une place pour ajouter, aucun TB n'a le meme rang que nous dans la file F0.
 				addBefore(&iteF0, &elemToAdd);
 
@@ -208,7 +210,16 @@ FB *unionFile(FB **f0, FB **f1)
 			// Si on a pas pu s'ajoute alors qu'on est en fin de liste.
 			if (iteF0 == NULL)
 			{
-				addAfter(&tempoAdd, &elemToAdd);
+
+				if (!tempoAdd)
+				{
+					(*f0)->listTree = createEmptyListTB();
+					(*f0)->listTree->data = elemToAdd;
+				}
+				else
+				{
+					addAfter(&tempoAdd, &elemToAdd);
+				}
 			}
 		}
 
