@@ -55,7 +55,6 @@ void ConsIter_t(tasTree **t, bigInt **adds, int taille){
 		descendre_t(cible);
 	}
 	(*t)->nbelem = tmpnbelem;
-	free(adds);
 }
 
 void ajouter_all_sans_monter(tasTree **t, noeud *n){

@@ -43,7 +43,6 @@ void ConsIter(tasTab **t, bigInt **adds, int taille){//a modifier
 	for(i = nbelem; i >0; i--){
 		descendre(*t, i);
 	}
-	free(adds);
 }
 
 tasTab *Union(tasTab *t1, tasTab *t2){
