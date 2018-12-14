@@ -29,13 +29,12 @@ void Ajoutsans_monter(tasTab *t, bigInt *add){
 	t->tab[t->nbelem] = copier(add);
 }
 
-void ConsIter(tasTab **t, bigInt **adds, int taille){//a modifier
+void ConsIter(tasTab **t, bigInt **adds, int taille){
 	int i;
 	for(i = 0; i < taille; ++i){
 		Ajoutsans_monter(*t, adds[i]);
 	}
 	if((*t)->nbelem < 2){
-		free(adds);
 		return;
 	}
 	int h =  ((int)(log10((*t)->nbelem)/log10(2)));

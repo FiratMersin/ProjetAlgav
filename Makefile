@@ -1,6 +1,10 @@
-all: main mainFileBinomiale menu tmain amain umain
+all: main mainFileBinomiale menu tmain amain umain unionmain clean
 
 #executables
+
+unionmain :util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o unionMain.o fileBinomiale.o tournoisBinomial.o
+	gcc -o unionmain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o unionMain.o -lm
+
 
 umain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o mainUnion.o fileBinomiale.o tournoisBinomial.o
 	gcc -o umain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o mainUnion.o -lm
@@ -21,6 +25,9 @@ mainFileBinomiale: mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o
 	gcc -o mainFileBinomiale mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o fileReader.o -lm
 	
 #.o
+
+unionMain.o : unionMain.c
+	gcc -c unionMain.c
 
 mainUnion.o : mainUnion.c
 	gcc -c mainUnion.c

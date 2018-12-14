@@ -42,7 +42,6 @@ void ConsIter_t(tasTree **t, bigInt **adds, int taille){
 	int tmpnbelem = (*t)->nbelem;
 	int nbelem = tmpnbelem;
 	if(nbelem < 2){
-		free(adds);
 		return;
 	}
 	int h =  ((int)(log10(nbelem)/log10(2)));
@@ -65,7 +64,7 @@ void ajouter_all_sans_monter(tasTree **t, noeud *n){
 	}
 }
 
-tasTree *Union_t(tasTree *t1, tasTree *t2){//à implémenter en O(n+m) n+m = nb de BigInt de t1 + t2
+tasTree *Union_t(tasTree *t1, tasTree *t2){//en O(n+m), n+m = nb de BigInt de t1 et t2
 	tasTree *t = init_t(t1->nbelem + t2->nbelem);
 	ajouter_all_sans_monter(&t, t1->tas);
 	ajouter_all_sans_monter(&t, t2->tas);
@@ -80,7 +79,7 @@ tasTree *Union_t(tasTree *t1, tasTree *t2){//à implémenter en O(n+m) n+m = nb 
 	//ensuite de hauteur-1 à la racine, pour chaque niveau
 	//on applique la fonction descendre du noeud le plus a droite au noeud le plus a gauche
 	while(t->nbelem != 0){
-		t->nbelem--;
+		t->nbelem--;//on diminue nbelem pour que getNode retourne le noeud voulu
 		noeud **cible = getNode(&t, 0);
 		descendre_t(cible);
 	}
