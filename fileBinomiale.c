@@ -94,9 +94,14 @@ FB *ajout(FB *file, bigInt *element)
 
 bigInt *supprMin(FB **file)
 {
+	
+	//printf("Dans fct\n");
+
 	listTB *ite = (*file)->listTree;
 
 	listTB *min = ite;
+
+	(*file)->nbElement--;
 
 	// On cherche le minimum.
 	while (ite != NULL)
@@ -117,11 +122,17 @@ bigInt *supprMin(FB **file)
 	// On supprime l'element de la liste des TB.
 	removeElement(&min);
 
+	//printf("Passe2\n");
+
 	// On decapite le TB.
 	FB *fbDecapite = decapiteTB(&tbMin);
 
+	//printf("LOL\n");
+
 	// On unie les deux file.
 	(*file) = unionFile(file, &fbDecapite);
+
+	//printf("Fin de fct\n");
 
 	return bMin;
 }
@@ -157,6 +168,8 @@ FB *constIter(bigInt *tabElement, int size)
 FB *unionFile(FB **f0, FB **f1)
 {
 
+	//printf("Deb union\n");
+
 	FB *fb = createEmptyFileBinomiale();
 
 	listTB *iteF1 = (*f1)->listTree;
@@ -165,17 +178,27 @@ FB *unionFile(FB **f0, FB **f1)
 	// Que l'on supprime de f1 apres chaque ajout.
 	while (iteF1 != NULL)
 	{
+	
+		//printf("Deb B1\n");
+
 		TB *elemToAdd = iteF1->data;
 
 		listTB *iteF0 = (*f0)->listTree;
 
 		while (iteF0 != NULL)
 		{
+	
+			//printf("Deb B2\n");			
+
 			TB *currentElemF0 = iteF0->data;
 			listTB *tempoAdd = NULL;
 
+			//printf("Je vais mourir\n");
+
 			if (elemToAdd->rank == currentElemF0->rank)
 			{
+
+				//printf("if 1\n");
 
 				listTB *tmp = iteF0;
 
@@ -186,15 +209,30 @@ FB *unionFile(FB **f0, FB **f1)
 				// On se met sur le previous car iteF0 va etre remove.
 				if (iteF0 == NULL)
 				{
+					//printf("If 1 1\n");
+
+					//printf("tempoAdd->previous = %p\n", tempoAdd->previous);
+
 					tempoAdd = tempoAdd->previous;
+					
+					//printf("FIN if 1 1 \n");
+
 				}
+
+				//printf("avant merge\n");
 
 				elemToAdd = merge(&elemToAdd, &tmp->data);
 
+				//printf("apres merge\n");
+
 				removeElement(&tmp);
+
+				//printf("Apre remove\n");
 			}
 			else if (elemToAdd->rank < currentElemF0->rank)
 			{
+	
+				//printf("if 2\n");
 
 				// On a une place pour ajouter, aucun TB n'a le meme rang que nous dans la file F0.
 				addBefore(&iteF0, &elemToAdd);
@@ -203,6 +241,9 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 			else
 			{
+	
+				//printf("if 3\n");
+
 				tempoAdd = iteF0;
 				iteF0 = iteF0->next;
 			}
@@ -211,16 +252,24 @@ FB *unionFile(FB **f0, FB **f1)
 			if (iteF0 == NULL)
 			{
 
+				//printf("if NULL\n");
+				
 				if (!tempoAdd)
 				{
+					//printf("if NULL 1\n");
+
 					(*f0)->listTree = createEmptyListTB();
 					(*f0)->listTree->data = elemToAdd;
 				}
 				else
 				{
+					//printf("if NULL 2\n");
+
 					addAfter(&tempoAdd, &elemToAdd);
 				}
 			}
+
+			//printf("fin B2\n");
 		}
 
 		// On met a jour le pointer de la liste de f0.
@@ -237,10 +286,15 @@ FB *unionFile(FB **f0, FB **f1)
 
 		// On fait pas removeElement(iteF1->previous) car iteF1 peut etre NULL. (fin de liste).
 		removeElement(&elemToDel);
+	
+		//printf("Fin de b1\n");
+
 	}
 
 	(*f1)->nbElement = 0;
 	(*f1)->listTree = NULL;
+
+	//printf("Fin union\n");
 
 	return *f0;
 }

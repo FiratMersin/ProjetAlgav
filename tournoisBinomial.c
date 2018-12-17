@@ -147,7 +147,7 @@ listTB *removeElement(listTB **element)
 	(*element)->previous = NULL;
 	(*element)->next = NULL;
 
-	free((*element));
+	//free((*element));
 
 	if (tmpP != NULL)
 		return tmpP;

@@ -1,8 +1,8 @@
-plot "uniontasTab.time" with lines
+plot "SupprMinTasTab.time" with lines
 set term postscript landscape
-set output "Graphe_temps_execution_Union_TasTab.ps"
+set output "Graphe_temps_execution_SupprMin_TasTab.ps"
 set size 2, 1
-set title 'Union Tas Tab'
-set xlabel 'nombre de clefs (après union)'
+set title 'SupprMin TasTab'
+set xlabel 'nombre de clefs'
 set ylabel 'temps d execution (secondes)'
 replot 

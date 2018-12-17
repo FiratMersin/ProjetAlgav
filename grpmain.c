@@ -27,7 +27,11 @@ FILE *filebi3;
 FILE *filebi4;
 FILE *filebi5;
 FILE *resfile = fopen(argv[1], "w");
-tasTab* tas;
+tasTab* tas1;
+tasTab* tas2;
+tasTab* tas3;
+tasTab* tas4;
+tasTab* tas5;
 
 bigInt **aB1 = (bigInt **)(malloc(sizeof(bigInt*) * 250000));
 bigInt **aB2 = (bigInt **)(malloc(sizeof(bigInt*) * 250000));
@@ -61,26 +65,32 @@ for(i=0; i<taille; ++i){
 	GetChaine(filebi5, 100, str);
 	 aB5[i] = (creerBigInt(str));
  }
-afficheBigInt(aB1[0]);
+
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
 
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
+
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
 
 temps_cpu /= 5.0;
-printf("slt\n");
+
 fprintf(resfile, "%d %f\n", taille,temps_cpu);
 
 fclose(filebi1);
@@ -99,7 +109,7 @@ filebi4 = fopen("cles_alea/jeu_4_nb_cles_200.txt", "r");
 filebi5 = fopen("cles_alea/jeu_5_nb_cles_200.txt", "r");
 
 taille = 200;
-printf("sltsd\n");
+
 for(i=0; i<taille; ++i){
 	 GetChaine(filebi1, 100, str);
 	 aB1[i] =  (creerBigInt(str));
@@ -119,18 +129,24 @@ for(i=0; i<taille; ++i){
 
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -174,17 +190,24 @@ for(i=0; i<taille; ++i){
  }
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -227,18 +250,24 @@ for(i=0; i<taille; ++i){
  }
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -281,18 +310,24 @@ for(i=0; i<taille; ++i){
  }
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -336,18 +371,24 @@ for(i=0; i<taille; ++i){
  }
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -390,19 +431,24 @@ for(i=0; i<taille; ++i){
  }
 
 
+tas1 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas1, aB1[i]);
+tas2 = init(taille);
+for(i=0; i < taille; i++) Ajout(tas2, aB1[i]);
+tas3 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas3, aB1[i]);
+tas4 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas4, aB1[i]);
+tas5 = init(taille);;
+for(i=0; i < taille; i++) Ajout(tas5, aB1[i]);
+
 temps_initial = clock();
 
-tas = init(taille);;
-ConsIter(&tas, aB1,taille);
-tas = init(taille);
-ConsIter(&tas,aB2, taille);
-tas = init(taille);;
-ConsIter(&tas,aB3, taille);
-tas = init(taille);;
-ConsIter(&tas,aB4, taille);
-tas = init(taille);;
-ConsIter(&tas,aB5, taille);
-
+for(i=0; i < taille; i++) SupprMin(tas1);
+for(i=0; i < taille; i++) SupprMin(tas2);
+for(i=0; i < taille; i++) SupprMin(tas3);
+for(i=0; i < taille; i++) SupprMin(tas4);
+for(i=0; i < taille; i++) SupprMin(tas5);
 
 temps_final = clock();
 temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
@@ -427,7 +473,7 @@ fclose(filebi5);
 fclose(resfile);
 
 return 0;
-
+SupprMinTasTab
 }
 
 /*

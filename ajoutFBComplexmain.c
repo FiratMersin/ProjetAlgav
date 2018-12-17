@@ -28,7 +28,11 @@ int main(int argc, char** argv) {
 	FILE *filebi5;
 	FILE *resfile = fopen(argv[1], "w");
 
-	FB* resFB = createEmptyFileBinomiale();
+	FB** resFB = (FB**) (malloc(sizeof(FB*) * 5));
+
+	for (i = 0; i < 5; i++) {
+		resFB[i] = createEmptyFileBinomiale();
+	}
 
 	bigInt** a = (bigInt**)(malloc(sizeof(bigInt*) * 5));
 
@@ -66,20 +70,32 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
-	temps_initial = clock();
+	
 
 	for (j = 0; j < 5; j++) {
 	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
+
+	//printf("ICI\n");
+
+	temps_initial = clock();
+
+	for (j = 0; j < 5; j++) {
+		for (i = 0; i < taille; i++) {
+			//printf("LA\n");
+			supprMin(&(resFB[j]));
+		}
+	}
+
 
 	temps_final = clock();
 	temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC;
 
 	temps_cpu /= 5.0;
+
+	//printf("ICI\n");
 
 	fprintf(resfile, "%d %f\n", taille,temps_cpu);
 
@@ -116,14 +132,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+			resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();
@@ -166,14 +186,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();
@@ -216,14 +240,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();
@@ -266,14 +294,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();
@@ -316,14 +348,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();
@@ -366,14 +402,18 @@ int main(int argc, char** argv) {
 		a[4][i] = * (creerBigInt(str));
 	}
 
+	for (j = 0; j < 5; j++) {
+	 	for (i = 0; i < taille; i++) {
+	 		resFB[j] = ajout(resFB[j], &(a[j][i]));
+		}
+	}
+
 	temps_initial = clock();
 
 	for (j = 0; j < 5; j++) {
-	 	for (i = 0; i < taille; i++) {
-	 		resFB = ajout(resFB, a[j]);
+		for (i = 0; i < taille; i++) {
+			supprMin(&(resFB[j]));
 		}
-
-		resFB = createEmptyFileBinomiale();
 	}
 
 	temps_final = clock();

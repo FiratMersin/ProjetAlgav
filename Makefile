@@ -1,9 +1,8 @@
-all: main mainFileBinomiale menu tmain amain umain unionmain clean
+all: main mainFileBinomiale menu tmain amain umain  clean
 
 #executables
 
-unionmain :util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o unionMain.o fileBinomiale.o tournoisBinomial.o
-	gcc -o unionmain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o unionMain.o -lm
+
 
 
 umain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o mainUnion.o fileBinomiale.o tournoisBinomial.o
