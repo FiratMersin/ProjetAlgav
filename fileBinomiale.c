@@ -94,7 +94,7 @@ FB *ajout(FB *file, bigInt *element)
 
 bigInt *supprMin(FB **file)
 {
-	
+
 	//printf("Dans fct\n");
 
 	listTB *ite = (*file)->listTree;
@@ -178,7 +178,7 @@ FB *unionFile(FB **f0, FB **f1)
 	// Que l'on supprime de f1 apres chaque ajout.
 	while (iteF1 != NULL)
 	{
-	
+
 		//printf("Deb B1\n");
 
 		TB *elemToAdd = iteF1->data;
@@ -187,8 +187,8 @@ FB *unionFile(FB **f0, FB **f1)
 
 		while (iteF0 != NULL)
 		{
-	
-			//printf("Deb B2\n");			
+
+			//printf("Deb B2\n");
 
 			TB *currentElemF0 = iteF0->data;
 			listTB *tempoAdd = NULL;
@@ -214,9 +214,8 @@ FB *unionFile(FB **f0, FB **f1)
 					//printf("tempoAdd->previous = %p\n", tempoAdd->previous);
 
 					tempoAdd = tempoAdd->previous;
-					
-					//printf("FIN if 1 1 \n");
 
+					//printf("FIN if 1 1 \n");
 				}
 
 				//printf("avant merge\n");
@@ -231,7 +230,7 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 			else if (elemToAdd->rank < currentElemF0->rank)
 			{
-	
+
 				//printf("if 2\n");
 
 				// On a une place pour ajouter, aucun TB n'a le meme rang que nous dans la file F0.
@@ -241,7 +240,7 @@ FB *unionFile(FB **f0, FB **f1)
 			}
 			else
 			{
-	
+
 				//printf("if 3\n");
 
 				tempoAdd = iteF0;
@@ -253,7 +252,7 @@ FB *unionFile(FB **f0, FB **f1)
 			{
 
 				//printf("if NULL\n");
-				
+
 				if (!tempoAdd)
 				{
 					//printf("if NULL 1\n");
@@ -286,9 +285,8 @@ FB *unionFile(FB **f0, FB **f1)
 
 		// On fait pas removeElement(iteF1->previous) car iteF1 peut etre NULL. (fin de liste).
 		removeElement(&elemToDel);
-	
-		//printf("Fin de b1\n");
 
+		//printf("Fin de b1\n");
 	}
 
 	(*f1)->nbElement = 0;
@@ -507,5 +505,75 @@ void displayFBR(FBR *fbr)
 	else
 	{
 		printf("FBR vide\n");
+	}
+}
+
+void freeFB(FB *fb)
+{
+
+	listTB *ite = fb->listTree;
+
+	if (ite != NULL)
+	{
+
+		listTB *last = NULL;
+
+		while (ite != NULL)
+		{
+
+			listTB *tmp = ite;
+
+			if (tmp == NULL)
+				last = ite;
+
+			if (ite->previous != NULL)
+				free(ite->previous);
+
+			freeTB(ite->data);
+
+			ite = tmp;
+		}
+
+		free(last);
+
+		free(fb);
+	}
+	else
+	{
+		free(fb);
+	}
+}
+
+void freeFBR(FBR* fbr) {
+	listTB *ite = fbr->listTree;
+
+	if (ite != NULL)
+	{
+
+		listTB *last = NULL;
+
+		while (ite != NULL)
+		{
+
+			listTB *tmp = ite;
+
+			if (tmp == NULL)
+				last = ite;
+
+			if (ite->previous != NULL)
+				free(ite->previous);
+
+			freeTB(ite->data);
+
+			ite = tmp;
+		}
+
+		free(last);
+
+		free(fbr);
+	}
+	else
+	{
+		free(fbr);
 	}
 }

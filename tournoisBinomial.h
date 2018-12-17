@@ -128,4 +128,9 @@ listTB **listTBToArray(listTB *tb);
 
 char *toStringTB(TB *tb);
 
+void freeElemListTB(listTB* elem);
+
+/*Libere le tb.*/
+void freeTB(TB *tb);
+
 #endif

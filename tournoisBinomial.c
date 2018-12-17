@@ -261,3 +261,36 @@ char *toStringTB(TB *tb)
 
 	return array;
 }
+
+void freeTB(TB *tb)
+{
+
+	listTB *ite = tb->listChild;
+
+	if (ite != NULL)
+	{
+
+		listTB* last = NULL;		
+		
+		while (ite != NULL)
+		{
+
+			listTB *tmp = ite->next;
+
+			if (tmp == NULL)
+				last = ite;
+
+			freeTB(ite->data);
+
+			free(ite);
+
+			ite = tmp;
+		}
+
+		freeBigInt(tb->data);
+		free(tb);
+	} else {
+		freeBigInt(tb->data);
+		free(tb);
+	}
+}

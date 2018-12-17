@@ -473,7 +473,7 @@ fclose(filebi5);
 fclose(resfile);
 
 return 0;
-SupprMinTasTab
+//SupprMinTasTab
 }
 
 /*

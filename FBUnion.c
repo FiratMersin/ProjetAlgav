@@ -10,7 +10,7 @@
 #include "fileBinomiale.h"
 #include "fileReader.h"
 
-int main(int argc, char** argv) {
+int main(int argc, char**argv) {
 
     clock_t temps_initial;
 	clock_t temps_final;
@@ -21,8 +21,6 @@ int main(int argc, char** argv) {
     char str3[101];
     char str4[101];
     char str5[101];
-
-    FILE *resfile = fopen(argv[1], "w");
 
     FB *fb1_1;
     FB *container_1;
@@ -39,6 +37,9 @@ int main(int argc, char** argv) {
     FB *fb1_5;
     FB *container_5;
 
+    FILE *resfile = fopen(argv[1], "w");
+    if (resfile == NULL)
+        return -1;
 
     for(int i = 1; i <= 15; i++) {
         fb1_1 = createEmptyFileBinomiale();
@@ -58,10 +59,24 @@ int main(int argc, char** argv) {
 
 
         FILE *file_1_50_000 = fopen("cles_alea/jeu_1_nb_cles_50000.txt", "r");
+        if (file_1_50_000 == NULL)
+            return -1;
+
         FILE *file_2_50_000 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
+        if (file_2_50_000 == NULL)
+            return -1;
+
         FILE *file_3_50_000 = fopen("cles_alea/jeu_3_nb_cles_50000.txt", "r");
+        if (file_3_50_000 == NULL)
+            return -1;
+
         FILE *file_4_50_000 = fopen("cles_alea/jeu_4_nb_cles_50000.txt", "r");
+        if (file_4_50_000 == NULL)
+            return -1;
+
         FILE *file_5_50_000 = fopen("cles_alea/jeu_5_nb_cles_50000.txt", "r");
+        if (file_5_50_000 == NULL)
+            return -1;
 
         for (int j = 0; j < pow(2, i); j++) {
             GetChaine(file_1_50_000, 100, str1);
@@ -116,6 +131,21 @@ int main(int argc, char** argv) {
     }
 
     fclose(resfile);
+
+    // freeFB(fb1_1);
+    // freeFB(container_1);
+
+    // freeFB(fb1_2);
+    // freeFB(container_2);
+
+    // freeFB(fb1_3);
+    // freeFB(container_3);
+
+    // freeFB(fb1_4);
+    // freeFB(container_4);
+
+    // freeFB(fb1_5);
+    // freeFB(container_5);
 
     return 0;
 }

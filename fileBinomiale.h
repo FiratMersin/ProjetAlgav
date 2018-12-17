@@ -47,4 +47,8 @@ FB *FBRToFB(FBR **fbr);
 
 void displayFBR(FBR *fbr);
 
+void freeFB(FB* fb);
+
+void freeFBR(FBR* fbr);
+
 #endif

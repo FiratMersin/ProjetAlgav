@@ -1,15 +1,18 @@
-all: main mainFileBinomiale menu tmain amain umain  clean
+all: main mainFileBinomiale menu tmain FBConsIter FBAjout FBSupprMin FBUnion clean
 
 #executables
 
+FBConsIter: util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o FBConsIter.o fileBinomiale.o tournoisBinomial.o
+	gcc -o FBConsIter.exe  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o FBConsIter.o -lm
 
+FBAjout: util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o FBAjout.o fileBinomiale.o tournoisBinomial.o
+	gcc -o FBAjout.exe  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o FBAjout.o -lm
 
+FBSupprMin: util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o FBSupprMin.o fileBinomiale.o tournoisBinomial.o
+	gcc -o FBSupprMin.exe  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o FBSupprMin.o -lm
 
-umain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o mainUnion.o fileBinomiale.o tournoisBinomial.o
-	gcc -o umain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o mainUnion.o -lm
-
-amain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o ajoutFBComplexmain.o fileBinomiale.o tournoisBinomial.o
-	gcc -o amain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o ajoutFBComplexmain.o -lm
+FBUnion: util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o FBUnion.o fileBinomiale.o tournoisBinomial.o
+	gcc -o FBUnion.exe  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o FBUnion.o -lm
 
 tmain : util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o grpmain.o fileBinomiale.o tournoisBinomial.o
 	gcc -o tmain  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o grpmain.o -lm
@@ -25,14 +28,20 @@ mainFileBinomiale: mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o
 	
 #.o
 
+FBConsIter.o: FBConsIter.c
+	gcc -c FBConsIter.c
+
+FBAjout.o: FBAjout.c
+	gcc -c FBAjout.c
+
+FBSupprMin.o: FBSupprMin.c
+	gcc -c FBSupprMin.c
+
+FBUnion.o: FBUnion.c
+	gcc -c FBUnion.c
+
 unionMain.o : unionMain.c
 	gcc -c unionMain.c
-
-mainUnion.o : mainUnion.c
-	gcc -c mainUnion.c
-
-ajoutFBComplexmain.o: ajoutFBComplexmain.c
-	gcc -c ajoutFBComplexmain.c
 
 grpmain.o : grpmain.c
 	gcc -c grpmain.c
