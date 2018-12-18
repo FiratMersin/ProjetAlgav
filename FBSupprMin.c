@@ -60,11 +60,23 @@ int main(int argc, char **argv)
 
         displayFB(fb);
 
-        printf("On retire le premiers min\n");
+        printf("On retire les 3 premiers min un a un\n\n");
 
         bigInt* min = supprMin(&fb);
 
         printf("1er min = %s\n", toStringBigInt(min));
+
+        displayFB(fb);
+
+        min = supprMin(&fb);
+
+        printf("2eme min = %s\n", toStringBigInt(min));
+
+        displayFB(fb);
+
+        min = supprMin(&fb);
+
+        printf("3eme min = %s\n", toStringBigInt(min));
 
         displayFB(fb);
 

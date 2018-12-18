@@ -107,6 +107,33 @@ listTB *addBefore(listTB **list, TB **element)
 	return (*list);
 }
 
+listTB *addBeforeB(listTB **list, TB **element)
+{
+	listTB *ele = createListArbreBinomial((*element));
+
+	ele->next = (*list);
+
+	if ((*list) != NULL)
+	{
+
+		if ((*list)->previous != NULL)
+		{
+			listTB *previous = (*list)->previous;
+			previous->next = ele;
+		}
+
+		ele->previous = (*list)->previous;
+
+		(*list)->previous = ele;
+
+		return ele;
+	}
+	else
+	{
+		return ele;
+	}
+}
+
 listTB *addAfter(listTB **list, TB **element)
 {
 	listTB *ele = createListArbreBinomial((*element));
@@ -124,6 +151,33 @@ listTB *addAfter(listTB **list, TB **element)
 	(*list)->next = ele;
 
 	return (*list);
+}
+
+listTB *addAfterB(listTB **list, TB **element)
+{
+	listTB *ele = createListArbreBinomial((*element));
+
+	ele->previous = (*list);
+
+	if ((*list) != NULL)
+	{
+
+		if ((*list)->next != NULL)
+		{
+			listTB *next = (*list)->next;
+			next->previous = ele;
+		}
+
+		ele->next = (*list)->next;
+
+		(*list)->next = ele;
+
+		return ele;
+	}
+	else
+	{
+		return ele;
+	}
 }
 
 listTB *removeElement(listTB **element)
@@ -270,8 +324,8 @@ void freeTB(TB *tb)
 	if (ite != NULL)
 	{
 
-		listTB* last = NULL;		
-		
+		listTB *last = NULL;
+
 		while (ite != NULL)
 		{
 
@@ -289,7 +343,9 @@ void freeTB(TB *tb)
 
 		freeBigInt(tb->data);
 		free(tb);
-	} else {
+	}
+	else
+	{
 		freeBigInt(tb->data);
 		free(tb);
 	}

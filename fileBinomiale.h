@@ -27,6 +27,12 @@ Renvoie la file binomiale resultante.
 */
 FB *unionFile(FB **f0, FB **f1);
 
+/*Ne surtout pas reutiliser f0 et f1*/
+FB *oldU(FB **f0, FB **f1);
+
+/*Ne surtout pas reutiliser f0 et f1*/
+FB *newU(FB **f0, FB **f1);
+
 void displayFB(FB *fb);
 
 // FBR

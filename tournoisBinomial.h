@@ -91,12 +91,22 @@ Renvoie le pointeur list entre en parametres.
 listTB *addBefore(listTB **list, TB **element);
 
 /*
+Ajoute beaucoup mieux et renvoie l'element ajouté.
+*/
+listTB *addBeforeB(listTB **list, TB **element);
+
+/*
 Ajoute l'element apres l'element entre en parametre.
 Si la liste pointe au niveau du milieu d'une liste, l'ajout se fait proprement et la liste reste integre avec le nouvel element.
 
 Renvoie le pointeur list entre en parametres.
 */
 listTB *addAfter(listTB **list, TB **element);
+
+/*
+Ajoute beaucoup mieux et renvoie l'element ajouté.
+*/
+listTB *addAfterB(listTB **list, TB **element);
 
 /*
 Supprime l'element de la liste dans laquelle il etait.
