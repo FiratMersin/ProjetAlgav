@@ -13,7 +13,7 @@ typedef struct	{
 
 ////fonctions fondamentales////
 
-bigInt SupprMin(tasTab *t);
+bigInt* SupprMin(tasTab *t);
 
 void Ajout(tasTab *t, bigInt *add);
 
@@ -40,7 +40,7 @@ int plusPetitFils(tasTab *t, int i);
 int pere(int i);
 void monter(tasTab *t, int j);
 void descendre(tasTab *t, int j);
-
+void afficher(tasTab *t, int i);
 
 
 #endif

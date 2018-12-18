@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-bigInt SupprMin(tasTab *t){
+bigInt* SupprMin(tasTab *t){
 	echanger(t, racine(), t->nbelem);
 	bigInt *suppr = t->tab[t->nbelem];
 	t->nbelem--;
 	descendre(t, racine());
-	return *suppr;
+	return suppr;
 }
 
 void Ajout(tasTab *t, bigInt *add){
@@ -81,6 +81,10 @@ tasTab *init(int nbmax){
 
 void freeTasTab(tasTab *t){
 	if(t != NULL){
+		int i;
+		for(i = 1; i<=t->nbelem; i++){
+			free(t->tab[i]);
+		}
 		free(t->tab);
 		free(t);
 	}
@@ -164,6 +168,18 @@ void descendre(tasTab *t, int j){//retourne le nouvelle indice de l'élément à
 		}
 	}
 }
+
+void afficher(tasTab *t, int i){
+	if(i <= t->nbelem){
+		afficheBigInt(t->tab[i]);
+		afficher(t, filsGauche(i));
+		afficher(t, filsDroit(i));
+	}
+
+}
+
+
+
 /*
 tasTab *getFromFile(FILE *f, int taille){
 	 char str[101];

@@ -1,6 +1,12 @@
-all: main mainFileBinomiale menu tmain FBConsIter FBAjout FBSupprMin FBUnion clean
+all: main mainFileBinomiale menu tmain FBConsIter FBAjout FBSupprMin FBUnion tasTabAjout tasTabSupMin clean
 
 #executables
+
+tasTabAjout: util.o fileReader.o tasTab.o tasTabAjout.o 
+	gcc -o tasTabAjout  util.o fileReader.o tasTab.o tasTabAjout.o -lm
+	
+tasTabSupMin: util.o fileReader.o tasTab.o tasTabSupMin.o 
+	gcc -o tasTabSupMin  util.o fileReader.o tasTab.o tasTabSupMin.o -lm
 
 FBConsIter: util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o FBConsIter.o fileBinomiale.o tournoisBinomial.o
 	gcc -o FBConsIter.exe  util.o fileReader.o tasTree.o tasTab.o md5.o AVL.o fromFile.o fileBinomiale.o tournoisBinomial.o FBConsIter.o -lm
@@ -27,6 +33,12 @@ mainFileBinomiale: mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o
 	gcc -o mainFileBinomiale mainFileBinomiale.o fileBinomiale.o tournoisBinomial.o util.o fileReader.o -lm
 	
 #.o
+
+tasTabAjout.o: tasTabAjout.c
+	gcc -c tasTabAjout.c
+
+tasTabSupMin.o: tasTabSupMin.c
+	gcc -c tasTabSupMin.c
 
 FBConsIter.o: FBConsIter.c
 	gcc -c FBConsIter.c
