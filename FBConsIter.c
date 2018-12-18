@@ -10,612 +10,90 @@
 #include "fileBinomiale.h"
 #include "fileReader.h"
 
-int main(int argc, char**argv) {
+int main(int argc, char **argv)
+{
 
-    int i, j;
-    clock_t temps_initial;
-    clock_t temps_final;
-    double temps_cpu;
-    char str[101];
-    int taille;
-
-    FILE *filebi1;
-    FILE *filebi2;
-    FILE *filebi3;
-    FILE *filebi4;
-    FILE *filebi5;
-
-    FILE *resfile = fopen(argv[1], "w");
-    if (resfile == NULL)
-        return -1;
-
-    bigInt **a = (bigInt **)(malloc(sizeof(bigInt *) * 5));
-
-    a[0] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
-    a[1] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
-    a[2] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
-
-    a[3] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
-    a[4] = (bigInt *)(malloc(sizeof(bigInt) * 250000));
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_100.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_100.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_100.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_100.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_100.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 100;
-
-    for (i = 0; i < taille; ++i)
+    if (argc != 3)
     {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
+        printf("Erreur. Il faut 2 arguments (fichier nbClefs\n");
+        return -1;
     }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_200.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_200.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_200.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_200.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_200.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 200;
-
-    for (i = 0; i < taille; ++i)
+    else
     {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
 
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
+        char *nomFichier = argv[1];
+        int nbClef = atoi(argv[2]);
 
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
+        char str[101];
 
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
+        printf("Nom du fichier = %s\n", nomFichier);
+        printf("Nombre de clef = %d\n", nbClef);
 
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
+        FILE *f = fopen(nomFichier, "r");
+
+        if (f == NULL)
+            return -1;
+
+        FBR *fbr = createEmptyFBR();
+        FB* fb = createEmptyFileBinomiale();
+
+        GetChaine(f, 100, str);
+        bigInt *b = creerBigInt(str);
+
+        fbr = ajoutInFBRStatic(&fbr, createB0(b));
+        fb = ajout(fb, b);
+
+        printf("1er bigInt = %s\n", toStringBigInt(b));
+
+        printf("Apres ajout du bigInt:\n");
+
+        displayFBR(fbr);
+
+        int i = 0;
+
+        for (i = 1; i < nbClef; i++)
+        {
+            GetChaine(f, 100, str);
+            b = creerBigInt(str);
+
+            fbr = ajoutInFBRStatic(&fbr, createB0(b));
+            fb = ajout(fb, b);
+        }
+
+        printf("Apres les %d ajouts\n", nbClef);
+
+        displayFBR(fbr);
+
+        printf("Apres consolidation\n");
+
+        consolider(&fbr);
+
+        displayFBR(fbr);
+
+        printf("Comparaison avec un FB normal\n");
+
+        displayFB(fb);
+
+        printf("On retire le premier min pour voir s'ils correspondent\n");
+
+        FB* fbFBR = FBRToFB(&fbr);
+
+        bigInt* minFBR = supprMin(&fbFBR);
+
+        bigInt* minFB = supprMin(&fb);
+
+        printf("Min fbr = %s\n", toStringBigInt(minFBR));
+        printf("Min fb = %s\n", toStringBigInt(minFB));
+
+        printf("Les file apres la suppression\n");
+
+        displayFB(fbFBR);
+        displayFB(fb);
+
+        printf("FIN\n");
+
+        fclose(f);
     }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_500.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_500.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_500.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_500.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_500.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 500;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_1000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_1000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_1000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_1000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_1000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 1000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_10000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_10000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_10000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_10000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_10000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 10000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_20000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_20000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_20000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_20000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_20000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 20000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_50000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_50000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_50000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_50000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 50000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_100000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_100000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_100000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_100000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_100000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 100000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    filebi1 = fopen("cles_alea/jeu_1_nb_cles_250000.txt", "r");
-    if (filebi1 == NULL)
-        return -1;
-
-    filebi2 = fopen("cles_alea/jeu_2_nb_cles_250000.txt", "r");
-    if (filebi2 == NULL)
-        return -1;
-
-    filebi3 = fopen("cles_alea/jeu_3_nb_cles_250000.txt", "r");
-    if (filebi3 == NULL)
-        return -1;
-
-    filebi4 = fopen("cles_alea/jeu_4_nb_cles_250000.txt", "r");
-    if (filebi4 == NULL)
-        return -1;
-
-    filebi5 = fopen("cles_alea/jeu_5_nb_cles_250000.txt", "r");
-    if (filebi5 == NULL)
-        return -1;
-
-    taille = 250000;
-
-    for (i = 0; i < taille; ++i)
-    {
-        GetChaine(filebi1, 100, str);
-        a[0][i] = *(creerBigInt(str));
-
-        GetChaine(filebi2, 100, str);
-        a[1][i] = *(creerBigInt(str));
-
-        GetChaine(filebi3, 100, str);
-        a[2][i] = *(creerBigInt(str));
-
-        GetChaine(filebi4, 100, str);
-        a[3][i] = *(creerBigInt(str));
-
-        GetChaine(filebi5, 100, str);
-        a[4][i] = *(creerBigInt(str));
-    }
-
-    temps_initial = clock();
-
-    constIter(a[0], taille);
-    constIter(a[1], taille);
-    constIter(a[2], taille);
-    constIter(a[3], taille);
-    constIter(a[4], taille);
-
-    temps_final = clock();
-    temps_cpu = ((double)(temps_final - temps_initial)) / CLOCKS_PER_SEC;
-
-    temps_cpu /= 5.0;
-
-    fprintf(resfile, "%d %f\n", taille, temps_cpu);
-
-    fclose(filebi1);
-    fclose(filebi2);
-    fclose(filebi3);
-    fclose(filebi4);
-    fclose(filebi5);
-
-    // for (j = 0; j < 5; j++)
-    // {
-    //     for (i = 0; i < 250000; i++)
-    //     {
-    //         free(&a[j][i]);
-    //     }
-    
-    // }
 
     return 0;
 }

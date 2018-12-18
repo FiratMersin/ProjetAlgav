@@ -33,6 +33,9 @@ void displayFB(FB *fb);
 
 FBR *createEmptyFBR();
 
+/*Contient un variable static qui fait la consolidation tout seul*/
+FBR *ajoutInFBRStatic(FBR **fbr, TB *tb);
+
 FBR *ajoutInFBR(FBR **fbr, TB *tb);
 
 FBR *ajoutInFBRNoTouchNBElement(FBR **fbr, TB *tb);

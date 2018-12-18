@@ -10,142 +10,84 @@
 #include "fileBinomiale.h"
 #include "fileReader.h"
 
-int main(int argc, char**argv) {
+int main(int argc, char **argv)
+{
 
-    clock_t temps_initial;
-	clock_t temps_final;
-    double temps_cpu;
-
-    char str1[101];
-    char str2[101];
-    char str3[101];
-    char str4[101];
-    char str5[101];
-
-    FB *fb1_1;
-    FB *container_1;
-
-    FB *fb1_2;
-    FB *container_2;
-
-    FB *fb1_3;
-    FB *container_3;
-
-    FB *fb1_4;
-    FB *container_4;
-
-    FB *fb1_5;
-    FB *container_5;
-
-    FILE *resfile = fopen(argv[1], "w");
-    if (resfile == NULL)
+    if (argc != 4)
+    {
+        printf("Erreur. Il faut 3 arguments (fichier fichier nbClefs\n");
         return -1;
+    }
+    else
+    {
 
-    for(int i = 1; i <= 15; i++) {
-        fb1_1 = createEmptyFileBinomiale();
-        container_1 = createEmptyFileBinomiale();
+        char *nomFichier1 = argv[1];
+        char *nomFichier2 = argv[2];
+        int nbClef = atoi(argv[3]);
 
-        fb1_2 = createEmptyFileBinomiale();
-        container_2 = createEmptyFileBinomiale();
+        char str[101];
 
-        fb1_3 = createEmptyFileBinomiale();
-        container_3 = createEmptyFileBinomiale();
+        printf("Nom du fichier 1 = %s\n", nomFichier1);
+        printf("Nom du fichier 2 = %s\n", nomFichier2);
+        printf("Nombre de clef = %d\n", nbClef);
 
-        fb1_4 = createEmptyFileBinomiale();
-        container_4 = createEmptyFileBinomiale();
-
-        fb1_5 = createEmptyFileBinomiale();
-        container_5 = createEmptyFileBinomiale();
-
-
-        FILE *file_1_50_000 = fopen("cles_alea/jeu_1_nb_cles_50000.txt", "r");
-        if (file_1_50_000 == NULL)
+        FILE *f1 = fopen(nomFichier1, "r");
+        if (f1 == NULL)
             return -1;
 
-        FILE *file_2_50_000 = fopen("cles_alea/jeu_2_nb_cles_50000.txt", "r");
-        if (file_2_50_000 == NULL)
-            return -1;
+        FILE *f2 = fopen(nomFichier2, "r");
+        if (f2 == NULL)
+            return -2;
 
-        FILE *file_3_50_000 = fopen("cles_alea/jeu_3_nb_cles_50000.txt", "r");
-        if (file_3_50_000 == NULL)
-            return -1;
+        FB *fb1 = createEmptyFileBinomiale();
+        FB *fb2 = createEmptyFileBinomiale();
 
-        FILE *file_4_50_000 = fopen("cles_alea/jeu_4_nb_cles_50000.txt", "r");
-        if (file_4_50_000 == NULL)
-            return -1;
+        printf("On ajoute toute les clefs dans 2 FB differentes\n");
 
-        FILE *file_5_50_000 = fopen("cles_alea/jeu_5_nb_cles_50000.txt", "r");
-        if (file_5_50_000 == NULL)
-            return -1;
+        int i = 0;
+        bigInt *b = NULL;
+        for (i = 0; i < nbClef; i++)
+        {
+            GetChaine(f1, 100, str);
+            b = creerBigInt(str);
+            fb1 = ajout(fb1, b);
 
-        for (int j = 0; j < pow(2, i); j++) {
-            GetChaine(file_1_50_000, 100, str1);
-            bigInt *b1 = creerBigInt(str1);
-
-            GetChaine(file_2_50_000, 100, str2);
-            bigInt *b2 = creerBigInt(str1);
-
-            GetChaine(file_3_50_000, 100, str3);
-            bigInt *b3 = creerBigInt(str1);
-
-            GetChaine(file_4_50_000, 100, str4);
-            bigInt *b4 = creerBigInt(str1);
-
-            GetChaine(file_5_50_000, 100, str5);
-            bigInt *b5 = creerBigInt(str1);
-
-
-            if (j == 0) {
-               fb1_1 = ajout(fb1_1, b1);
-               fb1_2 = ajout(fb1_2, b2);
-               fb1_3 = ajout(fb1_3, b3);
-               fb1_4 = ajout(fb1_4, b4);
-               fb1_5 = ajout(fb1_5, b5);
-            } else {
-                container_1 = ajout(container_1, b1);
-                container_2 = ajout(container_2, b2);
-                container_3 = ajout(container_3, b3);
-                container_4 = ajout(container_4, b4);
-                container_5 = ajout(container_5, b5);
-            }
+            GetChaine(f2, 100, str);
+            b = creerBigInt(str);
+            fb2 = ajout(fb2, b);
         }
 
-        temps_initial = clock();
-        unionFile(&container_1, &fb1_1);
-        unionFile(&container_2, &fb1_2);
-        unionFile(&container_3, &fb1_3);
-        unionFile(&container_4, &fb1_4);
-        unionFile(&container_5, &fb1_5);
-        temps_final = clock();
-        temps_cpu = ((double)(temps_final - temps_initial))/CLOCKS_PER_SEC; 
-        temps_cpu /= 5.0;
+        printf("Affichage de f1\n");
 
-        fprintf(resfile, "%d %f\n", i, temps_cpu);
+        displayFB(fb1);
 
-        fclose(file_1_50_000);
-        fclose(file_2_50_000);
-        fclose(file_3_50_000);
-        fclose(file_4_50_000);
-        fclose(file_5_50_000);
+        printf("Affichage de f2\n");
 
+        displayFB(fb2);
+
+        printf("On fait l'union des 2 FB\n");
+
+        FB *uFB = unionFile(&fb1, &fb2);
+
+        printf("Affichage uFB\n");
+
+        displayFB(uFB);
+
+        printf("On retire le min de uFB\n");
+
+        bigInt* min = supprMin(&uFB);
+
+        printf("Min = %s\n", toStringBigInt(min));
+
+        printf("Affichage de uFB\n");
+
+        displayFB(uFB);
+
+        printf("FIN\n");
+
+        fclose(f1);
+        fclose(f2);
     }
-
-    fclose(resfile);
-
-    // freeFB(fb1_1);
-    // freeFB(container_1);
-
-    // freeFB(fb1_2);
-    // freeFB(container_2);
-
-    // freeFB(fb1_3);
-    // freeFB(container_3);
-
-    // freeFB(fb1_4);
-    // freeFB(container_4);
-
-    // freeFB(fb1_5);
-    // freeFB(container_5);
 
     return 0;
 }
